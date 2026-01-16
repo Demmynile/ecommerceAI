@@ -47,6 +47,49 @@ const RELEVANCE_SCORE = `score(
 )`;
 
 // ============================================
+// Paginated Filter Queries
+// Returns both total count and paginated results
+// ============================================
+
+/**
+ * Filter products by name with pagination
+ * Returns { total, results }
+ * Requires params: categorySlug, color, material, minPrice, maxPrice, searchQuery, inStock, offset, limit
+ */
+export const PAGINATED_FILTER_PRODUCTS_BY_NAME_QUERY = defineQuery(`{
+  "total": count(*[${PRODUCT_FILTER_CONDITIONS}]),
+  "results": *[${PRODUCT_FILTER_CONDITIONS}] | order(name asc) ${FILTERED_PRODUCT_PROJECTION}[$offset...$limit]
+}`);
+
+/**
+ * Filter products by price ascending with pagination
+ * Returns { total, results }
+ */
+export const PAGINATED_FILTER_PRODUCTS_BY_PRICE_ASC_QUERY = defineQuery(`{
+  "total": count(*[${PRODUCT_FILTER_CONDITIONS}]),
+  "results": *[${PRODUCT_FILTER_CONDITIONS}] | order(price asc) ${FILTERED_PRODUCT_PROJECTION}[$offset...$limit]
+}`);
+
+/**
+ * Filter products by price descending with pagination
+ * Returns { total, results }
+ */
+export const PAGINATED_FILTER_PRODUCTS_BY_PRICE_DESC_QUERY = defineQuery(`{
+  "total": count(*[${PRODUCT_FILTER_CONDITIONS}]),
+  "results": *[${PRODUCT_FILTER_CONDITIONS}] | order(price desc) ${FILTERED_PRODUCT_PROJECTION}[$offset...$limit]
+}`);
+
+/**
+ * Filter products by relevance with pagination
+ * Used when searching with text query
+ * Returns { total, results }
+ */
+export const PAGINATED_FILTER_PRODUCTS_BY_RELEVANCE_QUERY = defineQuery(`{
+  "total": count(*[${PRODUCT_FILTER_CONDITIONS}]),
+  "results": *[${PRODUCT_FILTER_CONDITIONS}] | ${RELEVANCE_SCORE} | order(_score desc, name asc) ${FILTERED_PRODUCT_PROJECTION}[$offset...$limit]
+}`);
+
+// ============================================
 // All Products Query
 // ============================================
 

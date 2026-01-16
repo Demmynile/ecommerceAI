@@ -1,19 +1,20 @@
 import { Suspense } from "react";
 import { sanityFetch } from "@/sanity/lib/live";
 import {
+  PAGINATED_FILTER_PRODUCTS_BY_NAME_QUERY,
+  PAGINATED_FILTER_PRODUCTS_BY_PRICE_ASC_QUERY,
+  PAGINATED_FILTER_PRODUCTS_BY_PRICE_DESC_QUERY,
+  PAGINATED_FILTER_PRODUCTS_BY_RELEVANCE_QUERY,
   FEATURED_PRODUCTS_QUERY,
-  FILTER_PRODUCTS_BY_NAME_QUERY,
-  FILTER_PRODUCTS_BY_PRICE_ASC_QUERY,
-  FILTER_PRODUCTS_BY_PRICE_DESC_QUERY,
-  FILTER_PRODUCTS_BY_RELEVANCE_QUERY,
 } from "@/lib/sanity/queries/products";
 import { ALL_CATEGORIES_QUERY } from "@/lib/sanity/queries/categories";
 import { FeaturedCarouselSkeleton } from "@/components/app/FeaturedCarouselSkeleton";
 import { FeaturedCarousel } from "@/components/app/FeaturedCarousel";
-// import { ProductSection } from "@/components/app/ProductSection";
-// import { CategoryTiles } from "@/components/app/CategoryTiles";
-// import { FeaturedCarousel } from "@/components/app/FeaturedCarousel";
-// import { FeaturedCarouselSkeleton } from "@/components/app/FeaturedCarouselSkeleton";
+import { CategoryTiles } from "@/components/app/CategoryTiles";
+import { ProductSection } from "@/components/app/ProductSection";
+import { ProductPagination } from "@/components/app/ProductPagination";
+import { validatePaginationParams, calculateOffset, generatePaginationMeta } from "@/lib/pagination/utils";
+import { PaginationInfo } from "@/components/ui/pagination";
 
 interface PageProps {
   searchParams: Promise<{
@@ -25,12 +26,20 @@ interface PageProps {
     maxPrice?: string;
     sort?: string;
     inStock?: string;
+    page?: string;
+    pageSize?: string;
   }>;
 }
 
 export default async function HomePage({ searchParams }: PageProps) {
   const params = await searchParams;
 
+  // Pagination parameters
+  const { page, pageSize } = validatePaginationParams(params.page, params.pageSize);
+  const offset = calculateOffset(page, pageSize);
+  const limit = offset + pageSize;
+
+  // Filter parameters
   const searchQuery = params.q ?? "";
   const categorySlug = params.category ?? "";
   const color = params.color ?? "";
@@ -44,23 +53,23 @@ export default async function HomePage({ searchParams }: PageProps) {
   const getQuery = () => {
     // If searching and sort is relevance, use relevance query
     if (searchQuery && sort === "relevance") {
-      return FILTER_PRODUCTS_BY_RELEVANCE_QUERY;
+      return PAGINATED_FILTER_PRODUCTS_BY_RELEVANCE_QUERY;
     }
 
     switch (sort) {
       case "price_asc":
-        return FILTER_PRODUCTS_BY_PRICE_ASC_QUERY;
+        return PAGINATED_FILTER_PRODUCTS_BY_PRICE_ASC_QUERY;
       case "price_desc":
-        return FILTER_PRODUCTS_BY_PRICE_DESC_QUERY;
+        return PAGINATED_FILTER_PRODUCTS_BY_PRICE_DESC_QUERY;
       case "relevance":
-        return FILTER_PRODUCTS_BY_RELEVANCE_QUERY;
+        return PAGINATED_FILTER_PRODUCTS_BY_RELEVANCE_QUERY;
       default:
-        return FILTER_PRODUCTS_BY_NAME_QUERY;
+        return PAGINATED_FILTER_PRODUCTS_BY_NAME_QUERY;
     }
   };
 
-  // Fetch products with filters (server-side via GROQ)
-  const { data: products } = await sanityFetch({
+  // Fetch paginated products with filters (server-side via GROQ)
+  const { data: paginatedData } = await sanityFetch({
     query: getQuery(),
     params: {
       searchQuery,
@@ -70,8 +79,14 @@ export default async function HomePage({ searchParams }: PageProps) {
       minPrice,
       maxPrice,
       inStock,
+      offset,
+      limit,
     },
   });
+
+  const products = paginatedData?.results || [];
+  const total = paginatedData?.total || 0;
+  const paginationMeta = generatePaginationMeta(page, pageSize, total);
 
   // Fetch categories for filter sidebar
   const { data: categories } = await sanityFetch({
@@ -105,19 +120,47 @@ export default async function HomePage({ searchParams }: PageProps) {
 
         {/* Category Tiles - Full width */}
         <div className="mt-6">
-          {/* <CategoryTiles
+          <CategoryTiles
             categories={categories}
             activeCategory={categorySlug || undefined}
-          /> */}
+          />
         </div>
       </div>
 
-      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        {/* <ProductSection
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8" id="products-section">
+        <ProductSection
           categories={categories}
           products={products}
           searchQuery={searchQuery}
-        /> */}
+        />
+
+        {/* Pagination Info */}
+        {total > 0 && (
+          <div className="mt-8 space-y-4">
+            <PaginationInfo
+              currentPage={page}
+              pageSize={pageSize}
+              total={total}
+              className="text-center"
+            />
+
+            {/* Pagination Controls */}
+            <ProductPagination
+              currentPage={page}
+              totalPages={paginationMeta.totalPages}
+              searchParams={params}
+            />
+          </div>
+        )}
+
+        {/* No Results Message */}
+        {total === 0 && (
+          <div className="mt-8 text-center">
+            <p className="text-zinc-600 dark:text-zinc-400">
+              No products found matching your criteria. Try adjusting your filters.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
