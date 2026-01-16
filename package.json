@@ -11,6 +11,7 @@
     "typegen": "sanity schema extract && sanity typegen generate --enforce-required-fields"
   },
   "dependencies": {
+    "@ai-sdk/react": "^3.0.40",
     "@clerk/nextjs": "^6.36.7",
     "@radix-ui/react-alert-dialog": "^1.1.15",
     "@radix-ui/react-collapsible": "^1.1.12",
