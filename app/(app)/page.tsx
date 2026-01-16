@@ -8,6 +8,8 @@ import {
   FILTER_PRODUCTS_BY_RELEVANCE_QUERY,
 } from "@/lib/sanity/queries/products";
 import { ALL_CATEGORIES_QUERY } from "@/lib/sanity/queries/categories";
+import { FeaturedCarouselSkeleton } from "@/components/app/FeaturedCarouselSkeleton";
+import { FeaturedCarousel } from "@/components/app/FeaturedCarousel";
 // import { ProductSection } from "@/components/app/ProductSection";
 // import { CategoryTiles } from "@/components/app/CategoryTiles";
 // import { FeaturedCarousel } from "@/components/app/FeaturedCarousel";
@@ -84,11 +86,11 @@ export default async function HomePage({ searchParams }: PageProps) {
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900">
       {/* Featured Products Carousel */}
-      {/* {featuredProducts.length > 0 && (
+      {featuredProducts.length > 0 && (
         <Suspense fallback={<FeaturedCarouselSkeleton />}>
           <FeaturedCarousel products={featuredProducts} />
         </Suspense>
-      )} */}
+      )}
 
       {/* Page Banner */}
       <div className="border-b border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950">
