@@ -8,17 +8,25 @@ import { CartSheet } from "@/components/app/CartSheet";
 import { ChatSheet } from "@/components/app/ChatSheet";
 import { AppShell } from "@/components/app/AppShell";
 
-export default function AppLayout({ children }: { children: React.ReactNode }) {
+function AppLayout({ children }: { children: React.ReactNode }) {
   return (
-    <>
-      <Header />
-      <AppShell>
-        <main>{children}</main>
-      </AppShell>
-      <CartSheet />
-      <ChatSheet />
-      <Toaster position="bottom-center" />
-      <SanityLive />
-    </>
+    <ClerkProvider>
+      <CartStoreProvider>
+        <ChatStoreProvider>
+          <>
+            <Header />
+            <AppShell>
+              <main>{children}</main>
+            </AppShell>
+            <CartSheet />
+            <ChatSheet />
+            <Toaster position="bottom-center" />
+            <SanityLive />
+          </>
+        </ChatStoreProvider>
+      </CartStoreProvider>
+    </ClerkProvider>
   );
 }
+
+export default AppLayout;

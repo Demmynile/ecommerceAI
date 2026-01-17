@@ -1,4 +1,4 @@
-
+"use client";
 import Link from "next/link";
 import { AddToCartButton } from "@/components/app/AddToCartButton";
 import { AskAISimilarButton } from "@/components/app/AskAISimilarButton";
