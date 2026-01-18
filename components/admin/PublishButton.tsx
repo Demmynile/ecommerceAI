@@ -2,10 +2,7 @@
 
 import { Suspense, useState } from "react";
 import {
-  useApplyDocumentActions,
   useDocument,
-  publishDocument,
-  discardDocument,
   type DocumentHandle,
 } from "@sanity/sdk-react";
 import { Save, Check, Loader2, Undo2 } from "lucide-react";
@@ -16,6 +13,8 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { publishDocumentAction, unpublishDocumentAction } from "@/lib/actions/admin-actions";
+import { toast } from "sonner";
 
 interface PublishButtonProps extends DocumentHandle {
   variant?: "default" | "outline" | "ghost";
@@ -29,7 +28,6 @@ function PublishButtonContent({
 }: PublishButtonProps) {
   const [isPublishing, setIsPublishing] = useState(false);
   const [justPublished, setJustPublished] = useState(false);
-  const apply = useApplyDocumentActions();
 
   // Get the document to check if it's a draft
   const { data: document } = useDocument(handle);
@@ -42,16 +40,17 @@ function PublishButtonContent({
     try {
       // Use the base ID (without drafts. prefix) for publishing
       const baseId = handle.documentId.replace("drafts.", "");
-      await apply(
-        publishDocument({
-          documentId: baseId,
-          documentType: handle.documentType,
-        }),
-      );
-      setJustPublished(true);
-      setTimeout(() => setJustPublished(false), 2000);
+      const result = await publishDocumentAction(baseId);
+      
+      if (result.success) {
+        setJustPublished(true);
+        setTimeout(() => setJustPublished(false), 2000);
+      } else {
+        toast.error(result.error || "Failed to publish");
+      }
     } catch (error) {
       console.error("Failed to publish:", error);
+      toast.error("Failed to publish");
     } finally {
       setIsPublishing(false);
     }
@@ -114,7 +113,6 @@ interface RevertButtonProps extends DocumentHandle {
 function RevertButtonContent({ size = "icon", ...handle }: RevertButtonProps) {
   const [isReverting, setIsReverting] = useState(false);
   const [justReverted, setJustReverted] = useState(false);
-  const apply = useApplyDocumentActions();
 
   // Get the document to check if it's a draft
   const { data: document } = useDocument(handle);
@@ -127,16 +125,17 @@ function RevertButtonContent({ size = "icon", ...handle }: RevertButtonProps) {
     try {
       // Use the base ID (without drafts. prefix) for discarding
       const baseId = handle.documentId.replace("drafts.", "");
-      await apply(
-        discardDocument({
-          documentId: baseId,
-          documentType: handle.documentType,
-        }),
-      );
-      setJustReverted(true);
-      setTimeout(() => setJustReverted(false), 2000);
+      const result = await unpublishDocumentAction(baseId);
+      
+      if (result.success) {
+        setJustReverted(true);
+        setTimeout(() => setJustReverted(false), 2000);
+      } else {
+        toast.error(result.error || "Failed to revert");
+      }
     } catch (error) {
       console.error("Failed to revert:", error);
+      toast.error("Failed to revert");
     } finally {
       setIsReverting(false);
     }

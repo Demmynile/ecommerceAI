@@ -1,14 +1,11 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
-  useApplyDocumentActions,
   useDocument,
   useQuery,
-  deleteDocument,
-  discardDocument,
   type DocumentHandle,
 } from "@sanity/sdk-react";
 import { Trash2 } from "lucide-react";
@@ -20,6 +17,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { deleteProductAction } from "@/lib/actions/admin-actions";
+import { toast } from "sonner";
 
 interface DeleteButtonProps {
   handle: DocumentHandle;
@@ -31,7 +30,7 @@ function DeleteButtonContent({
   redirectTo = "/admin/inventory",
 }: DeleteButtonProps) {
   const router = useRouter();
-  const apply = useApplyDocumentActions();
+  const [isPending, startTransition] = useTransition();
 
   const baseId = handle.documentId.replace("drafts.", "");
 
@@ -61,28 +60,19 @@ function DeleteButtonContent({
     );
     if (!confirmed) return;
 
-    try {
-      if (hasPublishedVersion) {
-        const result = await apply(
-          deleteDocument({
-            documentId: baseId,
-            documentType: handle.documentType,
-          }),
-        );
-        await result.submitted();
-      } else if (isDraft) {
-        const result = await apply(
-          discardDocument({
-            documentId: baseId,
-            documentType: handle.documentType,
-          }),
-        );
-        await result.submitted();
+    startTransition(async () => {
+      try {
+        const result = await deleteProductAction(baseId);
+        if (result.success) {
+          router.push(redirectTo);
+        } else {
+          toast.error(result.error || "Failed to delete product");
+        }
+      } catch (error) {
+        console.error("Delete failed:", error);
+        toast.error("Failed to delete product");
       }
-      router.push(redirectTo);
-    } catch (error) {
-      console.error("Delete failed:", error);
-    }
+    });
   };
 
   // If orders reference this product, redirect to Studio for safe deletion

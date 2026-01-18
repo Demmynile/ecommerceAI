@@ -2,12 +2,7 @@
 
 import { Suspense, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import {
-  useDocuments,
-  useApplyDocumentActions,
-  createDocumentHandle,
-  createDocument,
-} from "@sanity/sdk-react";
+import { useDocuments } from "@sanity/sdk-react";
 import { Plus, Package, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -19,6 +14,8 @@ import {
   useProductSearchFilter,
   ProductTableHeader,
 } from "@/components/admin";
+import { createProductAction } from "@/lib/actions/admin-actions";
+import { toast } from "sonner";
 
 interface ProductListContentProps {
   filter?: string;
@@ -118,16 +115,15 @@ function InventoryContent() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isPending, startTransition] = useTransition();
   const { filter, isSearching } = useProductSearchFilter(searchQuery);
-  const apply = useApplyDocumentActions();
 
   const handleCreateProduct = () => {
     startTransition(async () => {
-      const newDocHandle = createDocumentHandle({
-        documentId: crypto.randomUUID(),
-        documentType: "product",
-      });
-      await apply(createDocument(newDocHandle));
-      router.push(`/admin/inventory/${newDocHandle.documentId}`);
+      const result = await createProductAction();
+      if (result.success) {
+        router.push(`/admin/inventory/${result.productId}`);
+      } else {
+        toast.error(result.error || "Failed to create product");
+      }
     });
   };
 

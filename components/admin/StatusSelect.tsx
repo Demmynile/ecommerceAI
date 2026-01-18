@@ -1,11 +1,9 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useTransition } from "react";
 import {
   useDocument,
   useEditDocument,
-  useApplyDocumentActions,
-  publishDocument,
   type DocumentHandle,
 } from "@sanity/sdk-react";
 import {
@@ -17,13 +15,15 @@ import {
 } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ORDER_STATUS_CONFIG, getOrderStatus, type OrderStatusValue } from "@/lib/constants/orderStatus";
+import { updateOrderStatusAction } from "@/lib/actions/admin-actions";
+import { toast } from "sonner";
 
 interface StatusSelectProps extends DocumentHandle {}
 
 function StatusSelectContent(handle: StatusSelectProps) {
   const { data: status } = useDocument({ ...handle, path: "status" });
   const editStatus = useEditDocument({ ...handle, path: "status" });
-  const apply = useApplyDocumentActions();
+  const [isPending, startTransition] = useTransition();
 
   const currentStatus = (status as string) ?? "paid";
   const statusConfig = getOrderStatus(currentStatus);
@@ -31,8 +31,13 @@ function StatusSelectContent(handle: StatusSelectProps) {
 
   const handleStatusChange = async (value: string) => {
     editStatus(value);
-    // Auto-publish status changes so they take effect immediately
-    await apply(publishDocument(handle));
+    // Auto-save status changes to backend
+    startTransition(async () => {
+      const result = await updateOrderStatusAction(handle.documentId, value);
+      if (!result.success) {
+        toast.error(result.error || "Failed to update status");
+      }
+    });
   };
 
   return (
