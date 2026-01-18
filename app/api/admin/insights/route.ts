@@ -9,6 +9,9 @@ import {
   REVENUE_BY_PERIOD_QUERY,
 } from "@/lib/sanity/queries/stats";
 
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 interface OrderItem {
   quantity: number;
   priceAtPurchase: number;

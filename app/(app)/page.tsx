@@ -16,6 +16,9 @@ import { ProductPagination } from "@/components/app/ProductPagination";
 import { validatePaginationParams, calculateOffset, generatePaginationMeta } from "@/lib/pagination/utils";
 import { PaginationInfo } from "@/components/ui/pagination";
 
+// Revalidate every 60 seconds for fresh data
+export const revalidate = 60;
+
 interface PageProps {
   searchParams: Promise<{
     q?: string;

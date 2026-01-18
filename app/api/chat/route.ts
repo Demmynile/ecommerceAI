@@ -2,6 +2,9 @@ import { createAgentUIStreamResponse, type UIMessage } from "ai";
 import { auth } from "@clerk/nextjs/server";
 import { createShoppingAgent } from "@/lib/ai/shopping-agent";
 
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 export async function POST(request: Request) {
   let body: any;
   try {

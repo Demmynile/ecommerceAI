@@ -4,6 +4,9 @@ import { PRODUCT_BY_SLUG_QUERY } from "@/lib/sanity/queries/products";
 import { ProductGallery } from "@/components/app/ProductGallery";
 import { ProductInfo } from "@/components/app/ProductInfo";
 
+// Revalidate every 60 seconds
+export const revalidate = 60;
+
 interface ProductPageProps {
   params: Promise<{
     slug: string;

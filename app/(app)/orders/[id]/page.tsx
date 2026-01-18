@@ -9,6 +9,9 @@ import { ORDER_BY_ID_QUERY } from "@/lib/sanity/queries/orders";
 import { getOrderStatus } from "@/lib/constants/orderStatus";
 import { formatPrice, formatDate } from "@/lib/utils";
 
+// Force dynamic rendering for authenticated content
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: "Order Details | Furniture Shop",
   description: "View your order details",
