@@ -1,6 +1,23 @@
 import { PackageIcon } from "@sanity/icons";
 import { defineField, defineType } from "sanity";
-import { MATERIALS_SANITY_LIST, COLORS_SANITY_LIST } from "@/lib/constants/filters";
+
+// Product attribute constants for Sanity schema
+const COLORS_SANITY_LIST = [
+  { title: "Black", value: "black" },
+  { title: "White", value: "white" },
+  { title: "Oak", value: "oak" },
+  { title: "Walnut", value: "walnut" },
+  { title: "Grey", value: "grey" },
+  { title: "Natural", value: "natural" },
+];
+
+const MATERIALS_SANITY_LIST = [
+  { title: "Wood", value: "wood" },
+  { title: "Metal", value: "metal" },
+  { title: "Fabric", value: "fabric" },
+  { title: "Leather", value: "leather" },
+  { title: "Glass", value: "glass" },
+];
 
 export const productType = defineType({
   name: "product",

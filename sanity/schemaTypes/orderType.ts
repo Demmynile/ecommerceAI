@@ -1,6 +1,13 @@
 import { BasketIcon } from "@sanity/icons";
 import { defineArrayMember, defineField, defineType } from "sanity";
-import { ORDER_STATUS_SANITY_LIST } from "@/lib/constants/orderStatus";
+
+// Order status options for Sanity schema
+const ORDER_STATUS_SANITY_LIST = [
+  { title: "Paid", value: "paid" },
+  { title: "Shipped", value: "shipped" },
+  { title: "Delivered", value: "delivered" },
+  { title: "Cancelled", value: "cancelled" },
+];
 
 export const orderType = defineType({
   name: "order",
