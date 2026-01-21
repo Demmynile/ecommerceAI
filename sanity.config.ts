@@ -12,11 +12,22 @@ import {structureTool} from 'sanity/structure'
 import {apiVersion, dataset, projectId} from './sanity/env'
 import {schema} from './sanity/schemaTypes'
 import {structure} from './sanity/structure'
+import AdminDashboard from './app/(admin)/admin-panel/page'
+
 
 export default defineConfig({
-  basePath: '/admin-panel;',
+  basePath: '/studio;',
   projectId,
   dataset,
+   // ✅ Custom tools go here
+  tools: [
+    {
+      name: 'admin-app',
+      title: 'Admin App',
+      component: AdminDashboard,
+    },
+  ],
+ 
   // Add and edit the content schema in the './sanity/schemaTypes' folder
   schema,
   plugins: [

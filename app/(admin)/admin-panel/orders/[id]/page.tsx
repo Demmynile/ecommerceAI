@@ -339,7 +339,7 @@ export default function OrderDetailPage({ params }: PageProps) {
     <div className="space-y-4 sm:space-y-6">
       {/* Back Link */}
       <Link
-        href="/admin/orders"
+        href="/admin-panel/orders"
         className="inline-flex items-center text-sm text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
       >
         <ArrowLeft className="mr-2 h-4 w-4" />

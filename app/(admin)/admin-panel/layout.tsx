@@ -18,17 +18,17 @@ import { Button } from "@/components/ui/button";
 const navItems = [
   {
     label: "Dashboard",
-    href: "/admin",
+    href: "/admin-panel",
     icon: LayoutDashboard,
   },
   {
     label: "Inventory",
-    href: "/admin/inventory",
+    href: "/admin-panel/inventory",
     icon: Package,
   },
   {
     label: "Orders",
-    href: "/admin/orders",
+    href: "/admin-panel/orders",
     icon: ShoppingCart,
   },
 ];
@@ -42,7 +42,7 @@ function AdminLayout({ children }: { children: React.ReactNode }) {
       <div className="flex min-h-screen bg-zinc-50 dark:bg-zinc-950">
         {/* Mobile Header */}
         <div className="fixed left-0 right-0 top-0 z-50 flex h-14 items-center justify-between border-b border-zinc-200 bg-white px-4 dark:border-zinc-800 dark:bg-zinc-900 lg:hidden">
-          <Link href="/admin" className="flex items-center gap-2">
+          <Link href="/admin-panel" className="flex items-center gap-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-900 dark:bg-zinc-100">
               <span className="text-sm font-bold text-white dark:text-zinc-900">
                 A
@@ -89,7 +89,7 @@ function AdminLayout({ children }: { children: React.ReactNode }) {
             {/* Logo */}
             <div className="flex h-16 items-center border-b border-zinc-200 px-6 dark:border-zinc-800">
               <Link
-                href="/admin"
+                href="/admin-panel"
                 className="flex items-center gap-2"
                 onClick={() => setSidebarOpen(false)}
               >
