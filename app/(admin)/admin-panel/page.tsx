@@ -21,7 +21,7 @@ export default function AdminDashboard() {
     startTransition(async () => {
       const result = await createProductAction();
       if (result.success) {
-        router.push(`/admin/inventory/${result.productId}`);
+        router.push(`/admin-panel/inventory/${result.productId}`);
       } else {
         toast.error(result.error || "Failed to create product");
       }
@@ -63,20 +63,20 @@ export default function AdminDashboard() {
           title="Total Products"
           icon={Package}
           documentType="product"
-          href="/admin/inventory"
+          href="/admin-panel/inventory"
         />
         <StatCard
           title="Total Orders"
           icon={ShoppingCart}
           documentType="order"
-          href="/admin/orders"
+          href="/admin-panel/orders"
         />
         <StatCard
           title="Low Stock Items"
           icon={TrendingUp}
           documentType="product"
           filter="stock <= 5"
-          href="/admin/inventory"
+          href="/admin-panel/inventory"
         />
       </div>
 
