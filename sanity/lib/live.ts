@@ -5,5 +5,9 @@ import { defineLive } from "next-sanity/live";
 import { client } from './client'
 
 export const { sanityFetch, SanityLive } = defineLive({
-  client,
+  client: client.withConfig({
+    perspective: 'published', // Only show published content
+  }),
+  serverToken: false, // Only fetch published content
+  browserToken: false, // Live previewing only works in Presentation Tool
 });
