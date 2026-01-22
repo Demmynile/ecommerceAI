@@ -16,9 +16,6 @@ import { ProductPagination } from "@/components/app/ProductPagination";
 import { validatePaginationParams, calculateOffset, generatePaginationMeta } from "@/lib/pagination/utils";
 import { PaginationInfo } from "@/components/ui/pagination";
 
-// Revalidate every 60 seconds for fresh data
-export const revalidate = 60;
-
 interface PageProps {
   searchParams: Promise<{
     q?: string;
@@ -71,35 +68,37 @@ export default async function HomePage({ searchParams }: PageProps) {
     }
   };
 
-  // Fetch paginated products with filters (server-side via GROQ)
-  const { data: paginatedData } = await sanityFetch({
-    query: getQuery(),
-    params: {
-      searchQuery,
-      categorySlug,
-      color,
-      material,
-      minPrice,
-      maxPrice,
-      inStock,
-      offset,
-      limit,
-    },
-  });
+  // Fetch all data in parallel for better performance
+  const [
+    { data: paginatedData },
+    { data: categories },
+    { data: featuredProducts }
+  ] = await Promise.all([
+    sanityFetch({
+      query: getQuery(),
+      params: {
+        searchQuery,
+        categorySlug,
+        color,
+        material,
+        minPrice,
+        maxPrice,
+        inStock,
+        offset,
+        limit,
+      },
+    }),
+    sanityFetch({
+      query: ALL_CATEGORIES_QUERY,
+    }),
+    sanityFetch({
+      query: FEATURED_PRODUCTS_QUERY,
+    }),
+  ]);
 
   const products = paginatedData?.results || [];
   const total = paginatedData?.total || 0;
   const paginationMeta = generatePaginationMeta(page, pageSize, total);
-
-  // Fetch categories for filter sidebar
-  const { data: categories } = await sanityFetch({
-    query: ALL_CATEGORIES_QUERY,
-  });
-
-  // Fetch featured products for carousel
-  const { data: featuredProducts } = await sanityFetch({
-    query: FEATURED_PRODUCTS_QUERY,
-  });
 
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900">
