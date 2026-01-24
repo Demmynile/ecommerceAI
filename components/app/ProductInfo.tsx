@@ -57,19 +57,19 @@ export function ProductInfo({ product }: ProductInfoProps) {
 
       {/* Metadata */}
       <div className="mt-6 space-y-2 border-t border-zinc-200 pt-6 dark:border-zinc-800">
-        {product.material && (
+        {product.carat && (
           <div className="flex justify-between text-sm">
-            <span className="text-zinc-500 dark:text-zinc-400">Material</span>
+            <span className="text-zinc-500 dark:text-zinc-400">Carat</span>
             <span className="font-medium capitalize text-zinc-900 dark:text-zinc-100">
-              {product.material}
+              {product.carat}
             </span>
           </div>
         )}
-        {product.color && (
+        {product.country && (
           <div className="flex justify-between text-sm">
-            <span className="text-zinc-500 dark:text-zinc-400">Color</span>
+            <span className="text-zinc-500 dark:text-zinc-400">Country</span>
             <span className="font-medium capitalize text-zinc-900 dark:text-zinc-100">
-              {product.color}
+              {product.country}
             </span>
           </div>
         )}
@@ -77,7 +77,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
           <div className="flex justify-between text-sm">
             <span className="text-zinc-500 dark:text-zinc-400">Dimensions</span>
             <span className="font-medium text-zinc-900 dark:text-zinc-100">
-              {product.dimensions.length}cm × {product.dimensions.width}cm
+              {product.dimensions}
             </span>
           </div>
         )}
