@@ -119,7 +119,7 @@ function LowStockAlertContent() {
       ))}
       {lowStockProducts.length > 5 && (
         <Link
-          href="/admin/inventory?filter=low-stock"
+          href="/admin-panel/inventory?filter=low-stock"
           className="block text-center text-sm text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
         >
           View all {lowStockProducts.length} low stock items →

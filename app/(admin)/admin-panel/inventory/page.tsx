@@ -120,7 +120,7 @@ function InventoryContent() {
     startTransition(async () => {
       const result = await createProductAction();
       if (result.success) {
-        router.push(`/admin/inventory/${result.productId}`);
+        router.push(`/admin-panel/inventory/${result.productId}`);
       } else {
         toast.error(result.error || "Failed to create product");
       }

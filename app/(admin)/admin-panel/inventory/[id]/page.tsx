@@ -28,23 +28,7 @@ import {
   ImageUploader,
   DeleteButton,
 } from "@/components/admin";
-
-const MATERIALS = [
-  { value: "wood", label: "Wood" },
-  { value: "metal", label: "Metal" },
-  { value: "fabric", label: "Fabric" },
-  { value: "leather", label: "Leather" },
-  { value: "glass", label: "Glass" },
-];
-
-const COLORS = [
-  { value: "black", label: "Black" },
-  { value: "white", label: "White" },
-  { value: "oak", label: "Oak" },
-  { value: "walnut", label: "Walnut" },
-  { value: "grey", label: "Grey" },
-  { value: "natural", label: "Natural" },
-];
+import { COUNTRIES, CARATS } from "@/lib/constants/filters";
 
 // Field editor components
 function NameEditor(handle: DocumentHandle) {
@@ -121,22 +105,22 @@ function StockEditor(handle: DocumentHandle) {
   );
 }
 
-function MaterialEditor(handle: DocumentHandle) {
-  const { data: material } = useDocument({ ...handle, path: "material" });
-  const editMaterial = useEditDocument({ ...handle, path: "material" });
+function CaratEditor(handle: DocumentHandle) {
+  const { data: carat } = useDocument({ ...handle, path: "carat" });
+  const editCarat = useEditDocument({ ...handle, path: "carat" });
 
   return (
     <Select
-      value={(material as string) ?? ""}
-      onValueChange={(value) => editMaterial(value)}
+      value={(carat as string) ?? ""}
+      onValueChange={(value) => editCarat(value)}
     >
       <SelectTrigger>
-        <SelectValue placeholder="Select material" />
+        <SelectValue placeholder="Select carat" />
       </SelectTrigger>
       <SelectContent>
-        {MATERIALS.map((m) => (
-          <SelectItem key={m.value} value={m.value}>
-            {m.label}
+        {CARATS.map((c) => (
+          <SelectItem key={c.value} value={c.value}>
+            {c.label}
           </SelectItem>
         ))}
       </SelectContent>
@@ -144,20 +128,20 @@ function MaterialEditor(handle: DocumentHandle) {
   );
 }
 
-function ColorEditor(handle: DocumentHandle) {
-  const { data: color } = useDocument({ ...handle, path: "color" });
-  const editColor = useEditDocument({ ...handle, path: "color" });
+function CountryEditor(handle: DocumentHandle) {
+  const { data: country } = useDocument({ ...handle, path: "country" });
+  const editCountry = useEditDocument({ ...handle, path: "country" });
 
   return (
     <Select
-      value={(color as string) ?? ""}
-      onValueChange={(value) => editColor(value)}
+      value={(country as string) ?? ""}
+      onValueChange={(value) => editCountry(value)}
     >
       <SelectTrigger>
-        <SelectValue placeholder="Select color" />
+        <SelectValue placeholder="Select country" />
       </SelectTrigger>
       <SelectContent>
-        {COLORS.map((c) => (
+        {COUNTRIES.map((c) => (
           <SelectItem key={c.value} value={c.value}>
             {c.label}
           </SelectItem>
@@ -322,15 +306,15 @@ function ProductDetailContent({ handle }: { handle: DocumentHandle }) {
             </h2>
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
-                <Label>Material</Label>
+                <Label>Carat</Label>
                 <Suspense fallback={<Skeleton className="h-10" />}>
-                  <MaterialEditor {...handle} />
+                  <CaratEditor {...handle} />
                 </Suspense>
               </div>
               <div className="space-y-2">
-                <Label>Color</Label>
+                <Label>Country</Label>
                 <Suspense fallback={<Skeleton className="h-10" />}>
-                  <ColorEditor {...handle} />
+                  <CountryEditor {...handle} />
                 </Suspense>
               </div>
               <div className="space-y-2 sm:col-span-2">

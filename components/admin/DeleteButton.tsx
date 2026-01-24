@@ -27,7 +27,7 @@ interface DeleteButtonProps {
 
 function DeleteButtonContent({
   handle,
-  redirectTo = "/admin/inventory",
+  redirectTo = "/admin-panel/inventory",
 }: DeleteButtonProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
