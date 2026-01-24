@@ -40,7 +40,7 @@ function OrderRow(handle: DocumentHandle) {
 
   return (
     <Link
-      href={`/admin/orders/${handle.documentId}`}
+      href={`/admin-panel/orders/${handle.documentId}`}
       className="flex items-center justify-between rounded-lg border border-zinc-100 bg-zinc-50 p-3 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-800/50 dark:hover:bg-zinc-800"
     >
       <div className="min-w-0 flex-1">
@@ -128,7 +128,7 @@ export function RecentOrders() {
           Recent Orders
         </h2>
         <Link
-          href="/admin/orders"
+          href="/admin-panel/orders"
           className="text-sm text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
         >
           View all →

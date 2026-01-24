@@ -77,7 +77,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
           <div className="flex justify-between text-sm">
             <span className="text-zinc-500 dark:text-zinc-400">Dimensions</span>
             <span className="font-medium text-zinc-900 dark:text-zinc-100">
-              {product.dimensions}
+              {product.dimensions.length}cm × {product.dimensions.width}cm
             </span>
           </div>
         )}

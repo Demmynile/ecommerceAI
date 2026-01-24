@@ -9,8 +9,8 @@ import { LOW_STOCK_THRESHOLD } from "@/lib/constants/stock";
 const PRODUCT_FILTER_CONDITIONS = `
   _type == "product"
   && ($categorySlug == "" || category->slug.current == $categorySlug)
-  && ($color == "" || color == $color)
-  && ($material == "" || material == $material)
+  && ($country == "" || country == $country)
+  && ($carat == "" || carat == $carat)
   && ($minPrice == 0 || price >= $minPrice)
   && ($maxPrice == 0 || price <= $maxPrice)
   && ($searchQuery == "" || name match $searchQuery + "*" || description match $searchQuery + "*")
@@ -35,8 +35,8 @@ const FILTERED_PRODUCT_PROJECTION = `{
     title,
     "slug": slug.current
   },
-  material,
-  color,
+  country,
+  carat,
   stock
 }`;
 
@@ -370,8 +370,8 @@ export const AI_SEARCH_PRODUCTS_QUERY = defineQuery(`*[
     || category->title match $searchQuery + "*"
   )
   && ($categorySlug == "" || category->slug.current == $categorySlug)
-  && ($material == "" || material == $material)
-  && ($color == "" || color == $color)
+  && ($carat == "" || carat == $carat)
+  && ($country == "" || country == $country)
   && ($minPrice == 0 || price >= $minPrice)
   && ($maxPrice == 0 || price <= $maxPrice)
 ] | order(name asc) [0...20] {
@@ -391,8 +391,8 @@ export const AI_SEARCH_PRODUCTS_QUERY = defineQuery(`*[
     title,
     "slug": slug.current
   },
-  material,
-  color,
+  carat,
+  country,
   dimensions,
   stock,
   featured,

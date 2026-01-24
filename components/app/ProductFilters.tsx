@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider";
-import { COLORS, MATERIALS, SORT_OPTIONS } from "@/lib/constants/filters";
+import { COUNTRIES, CARATS, SORT_OPTIONS } from "@/lib/constants/filters";
 import type { ALL_CATEGORIES_QUERYResult } from "@/sanity.types";
 
 interface ProductFiltersProps {
@@ -27,8 +27,8 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
 
   const currentSearch = searchParams.get("q") ?? "";
   const currentCategory = searchParams.get("category") ?? "";
-  const currentColor = searchParams.get("color") ?? "";
-  const currentMaterial = searchParams.get("material") ?? "";
+  const currentCountry = searchParams.get("country") ?? "";
+  const currentCarat = searchParams.get("carat") ?? "";
   const currentSort = searchParams.get("sort") ?? "name";
   const urlMinPrice = Number(searchParams.get("minPrice")) || 0;
   const urlMaxPrice = Number(searchParams.get("maxPrice")) || 5000;
@@ -48,16 +48,16 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
   // Check which filters are active
   const isSearchActive = !!currentSearch;
   const isCategoryActive = !!currentCategory;
-  const isColorActive = !!currentColor;
-  const isMaterialActive = !!currentMaterial;
+  const isCountryActive = !!currentCountry;
+  const isCaratActive = !!currentCarat;
   const isPriceActive = urlMinPrice > 0 || urlMaxPrice < 5000;
   const isInStockActive = currentInStock;
 
   const hasActiveFilters =
     isSearchActive ||
     isCategoryActive ||
-    isColorActive ||
-    isMaterialActive ||
+    isCountryActive ||
+    isCaratActive ||
     isPriceActive ||
     isInStockActive;
 
@@ -65,8 +65,8 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
   const activeFilterCount = [
     isSearchActive,
     isCategoryActive,
-    isColorActive,
-    isMaterialActive,
+    isCountryActive,
+    isCaratActive,
     isPriceActive,
     isInStockActive,
   ].filter(Boolean).length;
@@ -220,62 +220,62 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
         </Select>
       </div>
 
-      {/* Color */}
+      {/* Country */}
       <div>
-        <FilterLabel isActive={isColorActive} filterKey="color">
-          Color
+        <FilterLabel isActive={isCountryActive} filterKey="country">
+          Country
         </FilterLabel>
         <Select
-          value={currentColor || "all"}
+          value={currentCountry || "all"}
           onValueChange={(value) =>
-            updateParams({ color: value === "all" ? null : value })
+            updateParams({ country: value === "all" ? null : value })
           }
         >
           <SelectTrigger
             className={
-              isColorActive
+              isCountryActive
                 ? "border-amber-500 ring-1 ring-amber-500 dark:border-amber-400 dark:ring-amber-400"
                 : ""
             }
           >
-            <SelectValue placeholder="All Colors" />
+            <SelectValue placeholder="All Countries" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Colors</SelectItem>
-            {COLORS.map((color) => (
-              <SelectItem key={color.value} value={color.value}>
-                {color.label}
+            <SelectItem value="all">All Countries</SelectItem>
+            {COUNTRIES.map((country) => (
+              <SelectItem key={country.value} value={country.value}>
+                {country.label}
               </SelectItem>
             ))}
           </SelectContent>
         </Select>
       </div>
 
-      {/* Material */}
+      {/* Carat */}
       <div>
-        <FilterLabel isActive={isMaterialActive} filterKey="material">
-          Material
+        <FilterLabel isActive={isCaratActive} filterKey="carat">
+          Carat
         </FilterLabel>
         <Select
-          value={currentMaterial || "all"}
+          value={currentCarat || "all"}
           onValueChange={(value) =>
-            updateParams({ material: value === "all" ? null : value })
+            updateParams({ carat: value === "all" ? null : value })
           }
         >
           <SelectTrigger
             className={
-              isMaterialActive
+              isCaratActive
                 ? "border-amber-500 ring-1 ring-amber-500 dark:border-amber-400 dark:ring-amber-400"
                 : ""
             }
           >
-            <SelectValue placeholder="All Materials" />
+            <SelectValue placeholder="All Carats" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Materials</SelectItem>
-            {MATERIALS.map((material) => (
-              <SelectItem key={material.value} value={material.value}>
-                {material.label}
+            <SelectItem value="all">All Carats</SelectItem>
+            {CARATS.map((carat) => (
+              <SelectItem key={carat.value} value={carat.value}>
+                {carat.label}
               </SelectItem>
             ))}
           </SelectContent>

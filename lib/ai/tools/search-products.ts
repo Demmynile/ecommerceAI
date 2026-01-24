@@ -4,7 +4,7 @@ import { sanityFetch } from "@/sanity/lib/live";
 import { AI_SEARCH_PRODUCTS_QUERY } from "@/lib/sanity/queries/products";
 import { formatPrice } from "@/lib/utils";
 import { getStockStatus, getStockMessage } from "@/lib/constants/stock";
-import { MATERIAL_VALUES, COLOR_VALUES } from "@/lib/constants/filters";
+import { COUNTRY_VALUES, CARAT_VALUES } from "@/lib/constants/filters";
 import type { AI_SEARCH_PRODUCTS_QUERYResult } from "@/sanity.types";
 import type { SearchProduct } from "@/lib/ai/types";
 
@@ -14,25 +14,25 @@ const productSearchSchema = z.object({
     .optional()
     .default("")
     .describe(
-      "Search term to find products by name, description, or category (e.g., 'oak table', 'leather sofa', 'dining')"
+      "Search term to find products by name, description, or category (e.g., 'gold necklace', 'diamond ring', 'earrings')"
     ),
   category: z
     .string()
     .optional()
     .default("")
     .describe(
-      "Filter by category slug (e.g., 'sofas', 'tables', 'chairs', 'storage')"
+      "Filter by category slug (e.g., 'gold-jewelry', 'diamond-jewelry', 'rose-gold-jewelry')"
     ),
-  material: z
-    .enum(["", ...MATERIAL_VALUES])
+  country: z
+    .enum(["", ...COUNTRY_VALUES])
     .optional()
     .default("")
-    .describe("Filter by material type"),
-  color: z
-    .enum(["", ...COLOR_VALUES])
+    .describe("Filter by country of origin (e.g., 'india', 'italy', 'dubai', 'usa', 'turkey', 'egypt')"),
+  carat: z
+    .enum(["", ...CARAT_VALUES])
     .optional()
     .default("")
-    .describe("Filter by color"),
+    .describe("Filter by gold carat (e.g., '14k', '18k', '22k', '24k')"),
   minPrice: z
     .number()
     .optional()
@@ -47,14 +47,14 @@ const productSearchSchema = z.object({
 
 export const searchProductsTool = tool({
   description:
-    "Search for products in the furniture store. Can search by name, description, or category, and filter by material, color, and price range. Returns product details including stock availability.",
+    "Search for products in the jewelry store. Can search by name, description, or category, and filter by country of origin, gold carat, and price range. Returns product details including stock availability.",
   inputSchema: productSearchSchema,
-  execute: async ({ query, category, material, color, minPrice, maxPrice }) => {
+  execute: async ({ query, category, country, carat, minPrice, maxPrice }) => {
     console.log("[SearchProducts] Query received:", {
       query,
       category,
-      material,
-      color,
+      country,
+      carat,
       minPrice,
       maxPrice,
     });
@@ -65,8 +65,8 @@ export const searchProductsTool = tool({
         params: {
           searchQuery: query || "",
           categorySlug: category || "",
-          material: material || "",
-          color: color || "",
+          country: country || "",
+          carat: carat || "",
           minPrice: minPrice || 0,
           maxPrice: maxPrice || 0,
         },
@@ -83,8 +83,8 @@ export const searchProductsTool = tool({
           filters: {
             query,
             category,
-            material,
-            color,
+            country,
+            carat,
             minPrice,
             maxPrice,
           },
@@ -103,8 +103,8 @@ export const searchProductsTool = tool({
         priceFormatted: product.price ? formatPrice(product.price) : null,
         category: product.category?.title ?? null,
         categorySlug: product.category?.slug ?? null,
-        material: product.material ?? null,
-        color: product.color ?? null,
+        country: product.country ?? null,
+        carat: product.carat ?? null,
         dimensions: product.dimensions ?? null,
         stockCount: product.stock ?? 0,
         stockStatus: getStockStatus(product.stock),
@@ -123,8 +123,8 @@ export const searchProductsTool = tool({
         filters: {
           query,
           category,
-          material,
-          color,
+          country,
+          carat,
           minPrice,
           maxPrice,
         },
@@ -139,8 +139,8 @@ export const searchProductsTool = tool({
         filters: {
           query,
           category,
-          material,
-          color,
+          country,
+          carat,
           minPrice,
           maxPrice,
         },

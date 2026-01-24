@@ -85,8 +85,8 @@ export const PAGINATED_PRODUCT_PROJECTION = `{
     title,
     "slug": slug.current
   },
-  material,
-  color,
+  country,
+  carat,
   stock
 }`;
 
@@ -96,8 +96,8 @@ export const PAGINATED_PRODUCT_PROJECTION = `{
 export const PAGINATED_PRODUCT_FILTER_CONDITIONS = `
   _type == "product"
   && ($categorySlug == "" || category->slug.current == $categorySlug)
-  && ($color == "" || color == $color)
-  && ($material == "" || material == $material)
+  && ($country == "" || country == $country)
+  && ($carat == "" || carat == $carat)
   && ($minPrice == 0 || price >= $minPrice)
   && ($maxPrice == 0 || price <= $maxPrice)
   && ($searchQuery == "" || name match $searchQuery + "*" || description match $searchQuery + "*")

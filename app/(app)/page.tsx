@@ -23,8 +23,8 @@ interface PageProps {
   searchParams: Promise<{
     q?: string;
     category?: string;
-    color?: string;
-    material?: string;
+    country?: string;
+    carat?: string;
     minPrice?: string;
     maxPrice?: string;
     sort?: string;
@@ -45,8 +45,8 @@ export default async function HomePage({ searchParams }: PageProps) {
   // Filter parameters
   const searchQuery = params.q ?? "";
   const categorySlug = params.category ?? "";
-  const color = params.color ?? "";
-  const material = params.material ?? "";
+  const country = params.country ?? "";
+  const carat = params.carat ?? "";
   const minPrice = Number(params.minPrice) || 0;
   const maxPrice = Number(params.maxPrice) || 0;
   const sort = params.sort ?? "name";
@@ -77,8 +77,8 @@ export default async function HomePage({ searchParams }: PageProps) {
     params: {
       searchQuery,
       categorySlug,
-      color,
-      material,
+      country,
+      carat,
       minPrice,
       maxPrice,
       inStock,

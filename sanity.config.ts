@@ -16,7 +16,7 @@ import AdminDashboard from './app/(admin)/admin-panel/page'
 
 
 export default defineConfig({
-  basePath: '/studio;',
+  basePath: '/studio',
   projectId,
   dataset,
    // ✅ Custom tools go here

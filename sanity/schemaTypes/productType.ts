@@ -2,21 +2,21 @@ import { PackageIcon } from "@sanity/icons";
 import { defineField, defineType } from "sanity";
 
 // Product attribute constants for Sanity schema
-const COLORS_SANITY_LIST = [
-  { title: "Black", value: "black" },
-  { title: "White", value: "white" },
-  { title: "Oak", value: "oak" },
-  { title: "Walnut", value: "walnut" },
-  { title: "Grey", value: "grey" },
-  { title: "Natural", value: "natural" },
+const COUNTRIES_SANITY_LIST = [
+  { title: "India", value: "india" },
+  { title: "Italy", value: "italy" },
+  { title: "Turkey", value: "turkey" },
+  { title: "Egypt", value: "egypt" },
+  { title: "Dubai", value: "dubai" },
+  { title: "USA", value: "usa" },
 ];
 
-const MATERIALS_SANITY_LIST = [
-  { title: "Wood", value: "wood" },
-  { title: "Metal", value: "metal" },
-  { title: "Fabric", value: "fabric" },
-  { title: "Leather", value: "leather" },
-  { title: "Glass", value: "glass" },
+const CARATS_SANITY_LIST = [
+  { title: "14K", value: "14k" },
+  { title: "18K", value: "18k" },
+  { title: "21K", value: "21k" },
+  { title: "22K", value: "22k" },
+  { title: "24K", value: "24k" },
 ];
 
 export const productType = defineType({
@@ -73,20 +73,20 @@ export const productType = defineType({
       validation: (rule) => [rule.required().error("Category is required")],
     }),
     defineField({
-      name: "material",
+      name: "carat",
       type: "string",
       group: "details",
       options: {
-        list: MATERIALS_SANITY_LIST,
+        list: CARATS_SANITY_LIST,
         layout: "radio",
       },
     }),
     defineField({
-      name: "color",
+      name: "country",
       type: "string",
       group: "details",
       options: {
-        list: COLORS_SANITY_LIST,
+        list: COUNTRIES_SANITY_LIST,
         layout: "radio",
       },
     }),

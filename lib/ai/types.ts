@@ -11,8 +11,8 @@ export interface SearchProduct {
   priceFormatted: string | null;
   category: string | null;
   categorySlug: string | null;
-  material: string | null;
-  color: string | null;
+  country: string | null;
+  carat: string | null;
   dimensions: string | null;
   stockCount: number;
   stockStatus: "in_stock" | "low_stock" | "out_of_stock" | "unknown";
@@ -32,8 +32,8 @@ export interface SearchProductsResult {
   filters: {
     query: string;
     category: string;
-    material: string;
-    color: string;
+    country: string;
+    carat: string;
     minPrice: number;
     maxPrice: number;
   };

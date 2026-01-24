@@ -88,7 +88,7 @@ function ProductRowContent(handle: DocumentHandle) {
       {/* Name - Mobile: includes image, price, stock badges */}
       <TableCell className="py-3 sm:py-4">
         <Link
-          href={`/admin/inventory/${handle.documentId}`}
+          href={`/admin-panel/inventory/${handle.documentId}`}
           className="flex items-start gap-3 sm:block"
         >
           {/* Mobile image */}
