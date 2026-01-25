@@ -35,3 +35,24 @@ export interface FeaturedProduct {
 }
 
 export type FeaturedProductList = FeaturedProduct[];
+
+// Filtered product (used in product grids and lists)
+export interface FilteredProduct {
+  _id: string;
+  name: string;
+  slug: string;
+  price: number;
+  images: ProductImage[]; // First 4 images for hover effect
+  category: ProductCategory | null;
+  country: string | null;
+  carat: string | null;
+  stock: number;
+}
+
+export type FilteredProductList = FilteredProduct[];
+
+// Paginated results wrapper
+export interface PaginatedProducts {
+  total: number;
+  results: FilteredProductList;
+}

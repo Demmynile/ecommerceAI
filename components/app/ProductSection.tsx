@@ -6,13 +6,11 @@ import { Button } from "@/components/ui/button";
 import { ProductFilters } from "./ProductFilters";
 import { ProductGrid } from "./ProductGrid";
 import type { CategoryList } from "@/lib/sanity/types/categories";
-import type {
-  FILTER_PRODUCTS_BY_NAME_QUERYResult,
-} from "@/sanity.types";
+import type { FilteredProductList } from "@/lib/sanity/types/products";
 
 interface ProductSectionProps {
   categories: CategoryList;
-  products: FILTER_PRODUCTS_BY_NAME_QUERYResult;
+  products: FilteredProductList;
   searchQuery: string;
 }
 
