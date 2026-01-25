@@ -8,6 +8,7 @@ import { ORDERS_BY_USER_QUERY } from "@/lib/sanity/queries/orders";
 import { getOrderStatus } from "@/lib/constants/orderStatus";
 import { formatPrice, formatDate, formatOrderNumber } from "@/lib/utils";
 import { StackedProductImages } from "@/components/app/StackedProductImages";
+import type { OrderListItem } from "@/lib/sanity/types/orders";
 
 // Force dynamic rendering for authenticated content
 export const dynamic = 'force-dynamic';
@@ -51,11 +52,11 @@ export default async function OrdersPage() {
       </div>
 
       <div className="space-y-4">
-        {orders.map((order: any) => {
+        {orders.map((order: OrderListItem) => {
           const status = getOrderStatus(order.status);
           const StatusIcon = status.icon;
           const images = (order.itemImages ?? []).filter(
-            (url): url is string => url !== null,
+            (url: string | null): url is string => url !== null,
           );
 
           return (

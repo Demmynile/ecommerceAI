@@ -8,6 +8,7 @@ import { sanityFetch } from "@/sanity/lib/live";
 import { ORDER_BY_ID_QUERY } from "@/lib/sanity/queries/orders";
 import { getOrderStatus } from "@/lib/constants/orderStatus";
 import { formatPrice, formatDate } from "@/lib/utils";
+import type { OrderDetail, OrderDetailItem } from "@/lib/sanity/types/orders";
 
 // Force dynamic rendering for authenticated content
 export const dynamic = 'force-dynamic';
@@ -75,7 +76,7 @@ export default async function OrderDetailPage({ params }: OrderPageProps) {
               </h2>
             </div>
             <div className="divide-y divide-zinc-200 dark:divide-zinc-800">
-              {order.items?.map((item: any) => (
+              {order.items?.map((item: OrderDetailItem) => (
                 <div key={item._key} className="flex gap-4 px-6 py-4">
                   {/* Image */}
                   <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-md bg-zinc-100 dark:bg-zinc-800">
