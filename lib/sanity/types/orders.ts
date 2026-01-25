@@ -5,19 +5,19 @@
 
 export interface OrderListItem {
   _id: string;
-  orderNumber: string;
-  total: number;
-  status: string;
-  createdAt: string;
-  itemCount: number;
-  itemNames: (string | null)[];
-  itemImages: (string | null)[];
+  orderNumber: string | null;
+  total: number | null;
+  status: string | null;
+  createdAt: string | null;
+  itemCount: number | null;
+  itemNames: (string | null)[] | null;
+  itemImages: (string | null)[] | null;
 }
 
 export interface OrderDetailItem {
   _key: string;
-  quantity: number;
-  priceAtPurchase: number;
+  quantity: number | null;
+  priceAtPurchase: number | null;
   product: {
     _id: string;
     name: string | null;
@@ -33,12 +33,12 @@ export interface OrderDetailItem {
 
 export interface OrderDetail {
   _id: string;
-  orderNumber: string;
-  clerkUserId: string;
-  email: string;
-  items: OrderDetailItem[];
-  total: number;
-  status: string;
+  orderNumber: string | null;
+  clerkUserId: string | null;
+  email: string | null;
+  items: OrderDetailItem[] | null;
+  total: number | null;
+  status: string | null;
   address: {
     name: string | null;
     line1: string | null;
@@ -46,16 +46,16 @@ export interface OrderDetail {
     city: string | null;
     postcode: string | null;
     country: string | null;
-  };
+  } | null;
   stripePaymentId: string | null;
-  createdAt: string;
+  createdAt: string | null;
 }
 
 export interface RecentOrder {
   _id: string;
-  orderNumber: string;
-  email: string;
-  total: number;
-  status: string;
-  createdAt: string;
+  orderNumber: string | null;
+  email: string | null;
+  total: number | null;
+  status: string | null;
+  createdAt: string | null;
 }
