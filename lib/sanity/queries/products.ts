@@ -54,7 +54,7 @@ const RELEVANCE_SCORE = `score(
 /**
  * Filter products by name with pagination
  * Returns { total, results }
- * Requires params: categorySlug, color, material, minPrice, maxPrice, searchQuery, inStock, offset, limit
+ * Requires params: categorySlug, country, carat, minPrice, maxPrice, searchQuery, inStock, offset, limit
  */
 export const PAGINATED_FILTER_PRODUCTS_BY_NAME_QUERY = defineQuery(`{
   "total": count(*[${PRODUCT_FILTER_CONDITIONS}]),
@@ -118,8 +118,8 @@ export const ALL_PRODUCTS_QUERY = defineQuery(`*[
     title,
     "slug": slug.current
   },
-  material,
-  color,
+  carat,
+  country,
   dimensions,
   stock,
   featured,
@@ -178,8 +178,8 @@ export const PRODUCTS_BY_CATEGORY_QUERY = defineQuery(`*[
     title,
     "slug": slug.current
   },
-  material,
-  color,
+  carat,
+  country,
   stock
 }`);
 
@@ -209,8 +209,8 @@ export const PRODUCT_BY_SLUG_QUERY = defineQuery(`*[
     title,
     "slug": slug.current
   },
-  material,
-  color,
+  carat,
+  country,
   dimensions,
   stock,
   featured,
@@ -254,8 +254,8 @@ export const SEARCH_PRODUCTS_QUERY = defineQuery(`*[
     title,
     "slug": slug.current
   },
-  material,
-  color,
+  carat,
+  country,
   stock
 }`);
 
