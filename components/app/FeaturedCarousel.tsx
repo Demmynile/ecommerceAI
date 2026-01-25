@@ -16,12 +16,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn, formatPrice } from "@/lib/utils";
-import type { FEATURED_PRODUCTS_QUERYResult } from "@/sanity.types";
-
-type FeaturedProduct = FEATURED_PRODUCTS_QUERYResult[number];
+import type { FeaturedProduct, FeaturedProductList } from "@/lib/sanity/types/products";
 
 interface FeaturedCarouselProps {
-  products: FEATURED_PRODUCTS_QUERYResult;
+  products: FeaturedProductList;
 }
 
 export function FeaturedCarousel({ products }: FeaturedCarouselProps) {
