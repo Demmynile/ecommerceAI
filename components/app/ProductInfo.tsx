@@ -16,7 +16,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
   return (
     <div className="flex flex-col">
       {/* Category */}
-      {product.category && (
+      {product.category?.slug && product.category?.title && (
         <Link
           href={`/?category=${product.category.slug}`}
           className="text-sm text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
