@@ -131,6 +131,7 @@ export function ProductCard({ product }: ProductCardProps) {
       <CardFooter className="mt-auto p-5 pt-0">
         <AddToCartButton
           productId={product._id}
+          slug={product.slug ?? ""}
           name={product.name ?? "Unknown Product"}
           price={product.price ?? 0}
           image={mainImageUrl ?? undefined}

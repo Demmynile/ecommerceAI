@@ -47,6 +47,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
         <StockBadge productId={product._id} stock={product.stock ?? 0} />
         <AddToCartButton
           productId={product._id}
+          slug={product.slug ?? ""}
           name={product.name ?? "Unknown Product"}
           price={product.price ?? 0}
           image={imageUrl ?? undefined}
