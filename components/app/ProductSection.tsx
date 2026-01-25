@@ -5,13 +5,13 @@ import { PanelLeftClose, PanelLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProductFilters } from "./ProductFilters";
 import { ProductGrid } from "./ProductGrid";
+import type { CategoryList } from "@/lib/sanity/types/categories";
 import type {
-  ALL_CATEGORIES_QUERYResult,
   FILTER_PRODUCTS_BY_NAME_QUERYResult,
 } from "@/sanity.types";
 
 interface ProductSectionProps {
-  categories: ALL_CATEGORIES_QUERYResult;
+  categories: CategoryList;
   products: FILTER_PRODUCTS_BY_NAME_QUERYResult;
   searchQuery: string;
 }
