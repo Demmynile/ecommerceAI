@@ -25,13 +25,13 @@ export interface ProductCategory {
 
 export interface FeaturedProduct {
   _id: string;
-  name: string;
-  slug: string;
+  name: string | null;
+  slug: string | null;
   description: string | null;
-  price: number;
-  images: ProductImage[];
+  price: number | null;
+  images: ProductImage[] | null;
   category: ProductCategory | null;
-  stock: number;
+  stock: number | null;
 }
 
 export type FeaturedProductList = FeaturedProduct[];
