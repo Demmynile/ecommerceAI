@@ -75,3 +75,27 @@ export interface ProductDetail {
   carat: string | null;
   country: string | null;
 }
+
+// AI Search product (used by AI shopping assistant)
+export interface AISearchProduct {
+  _id: string;
+  name: string | null;
+  slug: string | null;
+  description: string | null;
+  price: number | null;
+  image: {
+    asset: {
+      _id: string;
+      url: string | null;
+    } | null;
+  } | null;
+  category: ProductCategory | null;
+  carat: string | null;
+  country: string | null;
+  dimensions: string | null;
+  stock: number | null;
+  featured: boolean | null;
+  assemblyRequired: boolean | null;
+}
+
+export type AISearchProductList = AISearchProduct[];
