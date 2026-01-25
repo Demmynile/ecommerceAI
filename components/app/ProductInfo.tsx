@@ -13,6 +13,15 @@ interface ProductInfoProps {
 export function ProductInfo({ product }: ProductInfoProps) {
   const imageUrl = product.images?.[0]?.asset?.url;
 
+  // Handle dimensions - could be string or object from old data
+  const dimensionsDisplay = product.dimensions
+    ? typeof product.dimensions === "string"
+      ? product.dimensions
+      : typeof product.dimensions === "object" && product.dimensions !== null
+        ? `${(product.dimensions as any).length || ""} x ${(product.dimensions as any).width || ""}`.trim()
+        : null
+    : null;
+
   return (
     <div className="flex flex-col">
       {/* Category */}
@@ -74,11 +83,11 @@ export function ProductInfo({ product }: ProductInfoProps) {
             </span>
           </div>
         )}
-        {product.dimensions && (
+        {dimensionsDisplay && (
           <div className="flex justify-between text-sm">
             <span className="text-zinc-500 dark:text-zinc-400">Dimensions</span>
             <span className="font-medium text-zinc-900 dark:text-zinc-100">
-              {product.dimensions}
+              {dimensionsDisplay}
             </span>
           </div>
         )}
