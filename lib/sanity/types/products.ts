@@ -56,3 +56,22 @@ export interface PaginatedProducts {
   total: number;
   results: FilteredProductList;
 }
+
+// Product detail (full product information for product page)
+export interface ProductDetail {
+  _id: string;
+  name: string;
+  slug: string;
+  description: string | null;
+  price: number;
+  images: ProductImage[];
+  category: ProductCategory | null;
+  material: string | null;
+  color: string | null;
+  dimensions: string | null;
+  stock: number;
+  featured: boolean | null;
+  assemblyRequired: boolean | null;
+  carat: string | null;
+  country: string | null;
+}
