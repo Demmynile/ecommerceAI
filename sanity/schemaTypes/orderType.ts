@@ -38,7 +38,7 @@ export const orderType = defineType({
             defineField({
               name: "product",
               type: "reference",
-              to: [{ type: "product" }],
+              to: [{ type: "product" }, { type: "goldProduct" }],
               validation: (rule) => rule.required(),
             }),
             defineField({
@@ -128,6 +128,33 @@ export const orderType = defineType({
       group: "payment",
       readOnly: true,
       description: "Stripe payment intent ID",
+    }),
+    defineField({
+      name: "coinbaseChargeId",
+      type: "string",
+      group: "payment",
+      readOnly: true,
+      description: "Coinbase Commerce charge ID",
+    }),
+    defineField({
+      name: "paymentMethod",
+      type: "string",
+      group: "payment",
+      readOnly: true,
+      options: {
+        list: [
+          { title: "Credit Card (Stripe)", value: "card" },
+          { title: "Cryptocurrency (Coinbase)", value: "crypto" },
+        ],
+      },
+      description: "Payment method used",
+    }),
+    defineField({
+      name: "cryptoCurrency",
+      type: "string",
+      group: "payment",
+      readOnly: true,
+      description: "Cryptocurrency used (if crypto payment)",
     }),
     defineField({
       name: "createdAt",

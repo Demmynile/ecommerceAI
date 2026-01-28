@@ -40,7 +40,10 @@ function OrderRowContent(handle: DocumentHandle) {
     <TableRow className="group transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/50">
       {/* Order Info - Mobile: includes email, items, total */}
       <TableCell className="py-3 sm:py-4">
-        <Link href={`/admin-panel/orders/${handle.documentId}`} className="block">
+        <Link
+          href={`/admin-panel/orders/${handle.documentId}`}
+          className="block"
+        >
           <div className="flex items-center justify-between gap-2 sm:block">
             <span className="font-medium text-zinc-900 dark:text-zinc-100">
               #{formatOrderNumber(data.orderNumber)}
@@ -80,14 +83,20 @@ function OrderRowContent(handle: DocumentHandle) {
 
       {/* Items - Desktop only */}
       <TableCell className="hidden py-4 text-center md:table-cell">
-        <Link href={`/admin-panel/orders/${handle.documentId}`} className="block">
+        <Link
+          href={`/admin-panel/orders/${handle.documentId}`}
+          className="block"
+        >
           {data.itemCount}
         </Link>
       </TableCell>
 
       {/* Total - Desktop only */}
       <TableCell className="hidden py-4 font-medium text-zinc-900 dark:text-zinc-100 sm:table-cell">
-        <Link href={`/admin-panel/orders/${handle.documentId}`} className="block">
+        <Link
+          href={`/admin-panel/orders/${handle.documentId}`}
+          className="block"
+        >
           {formatPrice(data.total)}
         </Link>
       </TableCell>
@@ -109,7 +118,10 @@ function OrderRowContent(handle: DocumentHandle) {
 
       {/* Date - Desktop only */}
       <TableCell className="hidden py-4 text-zinc-500 dark:text-zinc-400 md:table-cell">
-        <Link href={`/admin-panel/orders/${handle.documentId}`} className="block">
+        <Link
+          href={`/admin-panel/orders/${handle.documentId}`}
+          className="block"
+        >
           {formatDate(data.createdAt, "long", "—")}
         </Link>
       </TableCell>

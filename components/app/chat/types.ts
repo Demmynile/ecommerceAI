@@ -1,4 +1,3 @@
-
 // Type for tool parts (tool-{toolName} format from AI SDK 6)
 export interface ToolCallPart {
   type: string;

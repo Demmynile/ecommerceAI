@@ -4,8 +4,8 @@ import Stripe from "stripe";
 import { client, writeClient } from "@/sanity/lib/client";
 import { ORDER_BY_STRIPE_PAYMENT_ID_QUERY } from "@/lib/sanity/queries/orders";
 
-export const dynamic = 'force-dynamic';
-export const runtime = 'nodejs';
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
 
 export async function POST(req: Request) {
   // Runtime checks for environment variables
@@ -13,7 +13,7 @@ export async function POST(req: Request) {
     console.error("STRIPE_SECRET_KEY is not defined");
     return NextResponse.json(
       { error: "Server configuration error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 
@@ -21,7 +21,7 @@ export async function POST(req: Request) {
     console.error("STRIPE_WEBHOOK_SECRET is not defined");
     return NextResponse.json(
       { error: "Server configuration error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 
@@ -38,7 +38,7 @@ export async function POST(req: Request) {
   if (!signature) {
     return NextResponse.json(
       { error: "Missing stripe-signature header" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -51,7 +51,7 @@ export async function POST(req: Request) {
     console.error("Webhook signature verification failed:", message);
     return NextResponse.json(
       { error: `Webhook Error: ${message}` },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -71,7 +71,7 @@ export async function POST(req: Request) {
 
 async function handleCheckoutCompleted(
   session: Stripe.Checkout.Session,
-  stripe: Stripe
+  stripe: Stripe,
 ) {
   const stripePaymentId = session.payment_intent as string;
 
@@ -83,7 +83,7 @@ async function handleCheckoutCompleted(
 
     if (existingOrder) {
       console.log(
-        `Webhook already processed for payment ${stripePaymentId}, skipping`
+        `Webhook already processed for payment ${stripePaymentId}, skipping`,
       );
       return;
     }
@@ -164,7 +164,7 @@ async function handleCheckoutCompleted(
       .reduce(
         (tx, productId, i) =>
           tx.patch(productId, (p) => p.dec({ stock: quantities[i] })),
-        writeClient.transaction()
+        writeClient.transaction(),
       )
       .commit();
 

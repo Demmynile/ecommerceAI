@@ -59,10 +59,7 @@ export async function deleteProductAction(productId: string) {
   }
 }
 
-export async function updateOrderStatusAction(
-  orderId: string,
-  status: string,
-) {
+export async function updateOrderStatusAction(orderId: string, status: string) {
   try {
     await writeClient.patch(orderId).set({ status }).commit();
 
@@ -80,7 +77,7 @@ export async function publishDocumentAction(documentId: string) {
   try {
     // Get the draft document
     const draft = await writeClient.getDocument(`drafts.${documentId}`);
-    
+
     if (!draft) {
       return { success: false, error: "Draft not found" };
     }
@@ -95,7 +92,7 @@ export async function publishDocumentAction(documentId: string) {
     await writeClient.delete(`drafts.${documentId}`);
 
     revalidatePath("/admin");
-    
+
     return { success: true };
   } catch (error) {
     console.error("Failed to publish document:", error);
@@ -107,7 +104,7 @@ export async function unpublishDocumentAction(documentId: string) {
   try {
     // Get the published document
     const published = await writeClient.getDocument(documentId);
-    
+
     if (!published) {
       return { success: false, error: "Published document not found" };
     }
@@ -122,7 +119,7 @@ export async function unpublishDocumentAction(documentId: string) {
     await writeClient.delete(documentId);
 
     revalidatePath("/admin");
-    
+
     return { success: true };
   } catch (error) {
     console.error("Failed to unpublish document:", error);

@@ -127,7 +127,8 @@ function PaginationButton({
       disabled={isLoading}
       className={cn(
         "h-9 w-9 p-0",
-        isActive && "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900"
+        isActive &&
+          "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900",
       )}
     >
       {page}

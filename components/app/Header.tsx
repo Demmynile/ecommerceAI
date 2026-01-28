@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Package, ShoppingBag, Sparkles, User } from "lucide-react";
+import { Package, ShoppingBag, Sparkles, User, Coins } from "lucide-react";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import { useCartActions, useTotalItems } from "@/lib/store/cart-store-provider";
@@ -41,11 +41,22 @@ export function Header() {
             </Button>
           </SignedIn>
 
+          {/* Gold Trading */}
+          <Button
+            asChild
+            className="gap-2 bg-linear-to-r from-amber-500 via-amber-600 to-yellow-500 text-white shadow-md shadow-amber-200/50 transition-all hover:from-amber-600 hover:via-amber-700 hover:to-yellow-600 hover:shadow-lg hover:shadow-amber-300/50 dark:shadow-amber-900/50 dark:hover:shadow-amber-800/50"
+          >
+            <Link href="/gold">
+              <Coins className="h-4 w-4" />
+              <span className="text-sm font-medium">Gold Trading</span>
+            </Link>
+          </Button>
+
           {/* AI Shopping Assistant */}
           {!isChatOpen && (
             <Button
               onClick={openChat}
-              className="gap-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-md shadow-amber-200/50 transition-all hover:from-amber-600 hover:to-orange-600 hover:shadow-lg hover:shadow-amber-300/50 dark:shadow-amber-900/30 dark:hover:shadow-amber-800/40"
+              className="gap-2 bg-linear-to-r from-amber-500 to-orange-500 text-white shadow-md shadow-amber-200/50 transition-all hover:from-amber-600 hover:to-orange-600 hover:shadow-lg hover:shadow-amber-300/50 dark:shadow-amber-900/50 dark:hover:shadow-amber-800/50"
             >
               <Sparkles className="h-4 w-4" />
               <span className="text-sm font-medium">Ask AI</span>

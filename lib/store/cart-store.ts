@@ -9,6 +9,7 @@ export interface CartItem {
   price: number;
   quantity: number;
   image?: string;
+  isGoldProduct?: boolean;
 }
 
 export interface CartState {
@@ -48,14 +49,14 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
         addItem: (item, quantity = 1) =>
           set((state) => {
             const existing = state.items.find(
-              (i) => i.productId === item.productId
+              (i) => i.productId === item.productId,
             );
             if (existing) {
               return {
                 items: state.items.map((i) =>
                   i.productId === item.productId
                     ? { ...i, quantity: i.quantity + quantity }
-                    : i
+                    : i,
                 ),
               };
             }
@@ -76,7 +77,7 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
             }
             return {
               items: state.items.map((i) =>
-                i.productId === productId ? { ...i, quantity } : i
+                i.productId === productId ? { ...i, quantity } : i,
               ),
             };
           }),
@@ -92,7 +93,7 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
         skipHydration: true,
         // Only persist items, not UI state like isOpen
         partialize: (state) => ({ items: state.items }),
-      }
-    )
+      },
+    ),
   );
 };

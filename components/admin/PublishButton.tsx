@@ -1,10 +1,7 @@
 "use client";
 
 import { Suspense, useState } from "react";
-import {
-  useDocument,
-  type DocumentHandle,
-} from "@sanity/sdk-react";
+import { useDocument, type DocumentHandle } from "@sanity/sdk-react";
 import { Save, Check, Loader2, Undo2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -13,7 +10,10 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { publishDocumentAction, unpublishDocumentAction } from "@/lib/actions/admin-actions";
+import {
+  publishDocumentAction,
+  unpublishDocumentAction,
+} from "@/lib/actions/admin-actions";
 import { toast } from "sonner";
 
 interface PublishButtonProps extends DocumentHandle {
@@ -41,7 +41,7 @@ function PublishButtonContent({
       // Use the base ID (without drafts. prefix) for publishing
       const baseId = handle.documentId.replace("drafts.", "");
       const result = await publishDocumentAction(baseId);
-      
+
       if (result.success) {
         setJustPublished(true);
         setTimeout(() => setJustPublished(false), 2000);
@@ -126,7 +126,7 @@ function RevertButtonContent({ size = "icon", ...handle }: RevertButtonProps) {
       // Use the base ID (without drafts. prefix) for discarding
       const baseId = handle.documentId.replace("drafts.", "");
       const result = await unpublishDocumentAction(baseId);
-      
+
       if (result.success) {
         setJustReverted(true);
         setTimeout(() => setJustReverted(false), 2000);

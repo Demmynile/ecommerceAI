@@ -2,7 +2,10 @@
 
 import { useCallback, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
-import { validatePaginationParams, buildPaginationQueryString } from "@/lib/pagination/utils";
+import {
+  validatePaginationParams,
+  buildPaginationQueryString,
+} from "@/lib/pagination/utils";
 import type { PaginationParams } from "@/lib/pagination/types";
 
 /**
@@ -15,7 +18,7 @@ export function usePagination() {
   // Extract pagination params from URL
   const { page, pageSize } = validatePaginationParams(
     searchParams.get("page") ?? undefined,
-    searchParams.get("pageSize") ?? undefined
+    searchParams.get("pageSize") ?? undefined,
   );
 
   // Build query string for pagination links
@@ -31,7 +34,7 @@ export function usePagination() {
 
       return buildPaginationQueryString(params, newPage, newPageSize);
     },
-    [searchParams]
+    [searchParams],
   );
 
   return {
@@ -74,7 +77,7 @@ export function usePaginationWithFilters() {
       const queryString = buildPaginationLink(newPage, pageSize);
       return `?${queryString}`;
     },
-    [buildPaginationLink, pageSize]
+    [buildPaginationLink, pageSize],
   );
 
   const goToFirstPage = useCallback(() => {
@@ -87,7 +90,7 @@ export function usePaginationWithFilters() {
       const queryString = buildPaginationLink(totalPages, pageSize);
       return `?${queryString}`;
     },
-    [buildPaginationLink, pageSize]
+    [buildPaginationLink, pageSize],
   );
 
   return {

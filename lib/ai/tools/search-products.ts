@@ -14,20 +14,22 @@ const productSearchSchema = z.object({
     .optional()
     .default("")
     .describe(
-      "Search term to find products by name, description, or category (e.g., 'gold necklace', 'diamond ring', 'earrings')"
+      "Search term to find products by name, description, or category (e.g., 'gold necklace', 'diamond ring', 'earrings')",
     ),
   category: z
     .string()
     .optional()
     .default("")
     .describe(
-      "Filter by category slug (e.g., 'gold-jewelry', 'diamond-jewelry', 'rose-gold-jewelry')"
+      "Filter by category slug (e.g., 'gold-jewelry', 'diamond-jewelry', 'rose-gold-jewelry')",
     ),
   country: z
     .enum(["", ...COUNTRY_VALUES])
     .optional()
     .default("")
-    .describe("Filter by country of origin (e.g., 'india', 'italy', 'dubai', 'usa', 'turkey', 'egypt')"),
+    .describe(
+      "Filter by country of origin (e.g., 'india', 'italy', 'dubai', 'usa', 'turkey', 'egypt')",
+    ),
   carat: z
     .enum(["", ...CARAT_VALUES])
     .optional()

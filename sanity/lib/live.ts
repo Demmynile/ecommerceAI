@@ -2,11 +2,11 @@
 // Before using it, import and render "<SanityLive />" in your layout, see
 // https://github.com/sanity-io/next-sanity#live-content-api for more information.
 import { defineLive } from "next-sanity/live";
-import { client } from './client'
+import { client } from "./client";
 
 export const { sanityFetch, SanityLive } = defineLive({
   client: client.withConfig({
-    perspective: 'published', // Only show published content
+    perspective: "published", // Only show published content
   }),
   serverToken: false, // Only fetch published content
   browserToken: false, // Live previewing only works in Presentation Tool

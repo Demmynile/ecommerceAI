@@ -3,11 +3,7 @@
 import { Suspense, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import {
-  useDocument,
-  useQuery,
-  type DocumentHandle,
-} from "@sanity/sdk-react";
+import { useDocument, useQuery, type DocumentHandle } from "@sanity/sdk-react";
 import { Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";

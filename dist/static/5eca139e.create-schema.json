@@ -1,0 +1,905 @@
+[
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error",
+            "message": "Email is required"
+          }
+        ],
+        "name": "email",
+        "type": "string"
+      },
+      {
+        "description": "Customer's full name",
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "description": "Clerk user ID for authentication",
+        "name": "clerkUserId",
+        "type": "string"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error",
+            "message": "Stripe customer ID is required"
+          }
+        ],
+        "description": "Stripe customer ID for payments",
+        "readOnly": true,
+        "name": "stripeCustomerId",
+        "type": "string"
+      },
+      {
+        "readOnly": true,
+        "name": "createdAt",
+        "type": "datetime"
+      }
+    ],
+    "name": "customer",
+    "type": "document"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error",
+            "message": "Category title is required"
+          }
+        ],
+        "name": "title",
+        "type": "string"
+      },
+      {
+        "options": {
+          "source": "title",
+          "maxLength": 96
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "custom"
+              },
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error",
+            "message": "Slug is required for URL generation"
+          }
+        ],
+        "name": "slug",
+        "type": "slug"
+      },
+      {
+        "options": {
+          "hotspot": true
+        },
+        "description": "Category thumbnail image",
+        "name": "image",
+        "type": "image"
+      }
+    ],
+    "name": "category",
+    "type": "document"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error",
+            "message": "Order number is required"
+          }
+        ],
+        "readOnly": true,
+        "name": "orderNumber",
+        "type": "string"
+      },
+      {
+        "of": [
+          {
+            "fields": [
+              {
+                "validation": [
+                  {
+                    "rules": [
+                      {
+                        "flag": "presence",
+                        "constraint": "required"
+                      }
+                    ],
+                    "level": "error"
+                  }
+                ],
+                "to": [
+                  {
+                    "type": "product"
+                  },
+                  {
+                    "type": "goldProduct"
+                  }
+                ],
+                "name": "product",
+                "type": "reference"
+              },
+              {
+                "initialValue": 1,
+                "validation": [
+                  {
+                    "rules": [
+                      {
+                        "flag": "presence",
+                        "constraint": "required"
+                      },
+                      {
+                        "flag": "min",
+                        "constraint": 1
+                      }
+                    ],
+                    "level": "error"
+                  }
+                ],
+                "name": "quantity",
+                "type": "number"
+              },
+              {
+                "validation": [
+                  {
+                    "rules": [
+                      {
+                        "flag": "presence",
+                        "constraint": "required"
+                      }
+                    ],
+                    "level": "error"
+                  }
+                ],
+                "description": "Price at time of purchase",
+                "name": "priceAtPurchase",
+                "type": "number"
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "name": "items",
+        "type": "array"
+      },
+      {
+        "description": "Total order amount in GBP",
+        "readOnly": true,
+        "name": "total",
+        "type": "number"
+      },
+      {
+        "initialValue": "paid",
+        "options": {
+          "list": [
+            {
+              "title": "Paid",
+              "value": "paid"
+            },
+            {
+              "title": "Shipped",
+              "value": "shipped"
+            },
+            {
+              "title": "Delivered",
+              "value": "delivered"
+            },
+            {
+              "title": "Cancelled",
+              "value": "cancelled"
+            }
+          ],
+          "layout": "radio"
+        },
+        "name": "status",
+        "type": "string"
+      },
+      {
+        "description": "Reference to the customer record",
+        "to": [
+          {
+            "type": "customer"
+          }
+        ],
+        "name": "customer",
+        "type": "reference"
+      },
+      {
+        "description": "Clerk user ID",
+        "readOnly": true,
+        "name": "clerkUserId",
+        "type": "string"
+      },
+      {
+        "readOnly": true,
+        "name": "email",
+        "type": "string"
+      },
+      {
+        "fields": [
+          {
+            "name": "name",
+            "type": "string",
+            "title": "Full Name"
+          },
+          {
+            "name": "line1",
+            "type": "string",
+            "title": "Address Line 1"
+          },
+          {
+            "name": "line2",
+            "type": "string",
+            "title": "Address Line 2"
+          },
+          {
+            "name": "city",
+            "type": "string"
+          },
+          {
+            "name": "postcode",
+            "type": "string"
+          },
+          {
+            "name": "country",
+            "type": "string"
+          }
+        ],
+        "name": "address",
+        "type": "object"
+      },
+      {
+        "description": "Stripe payment intent ID",
+        "readOnly": true,
+        "name": "stripePaymentId",
+        "type": "string"
+      },
+      {
+        "description": "Coinbase Commerce charge ID",
+        "readOnly": true,
+        "name": "coinbaseChargeId",
+        "type": "string"
+      },
+      {
+        "options": {
+          "list": [
+            {
+              "title": "Credit Card (Stripe)",
+              "value": "card"
+            },
+            {
+              "title": "Cryptocurrency (Coinbase)",
+              "value": "crypto"
+            }
+          ]
+        },
+        "description": "Payment method used",
+        "readOnly": true,
+        "name": "paymentMethod",
+        "type": "string"
+      },
+      {
+        "description": "Cryptocurrency used (if crypto payment)",
+        "readOnly": true,
+        "name": "cryptoCurrency",
+        "type": "string"
+      },
+      {
+        "readOnly": true,
+        "name": "createdAt",
+        "type": "datetime"
+      }
+    ],
+    "name": "order",
+    "type": "document"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error",
+            "message": "Product name is required"
+          }
+        ],
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "options": {
+          "source": "name",
+          "maxLength": 96
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "custom"
+              },
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error",
+            "message": "Slug is required for URL generation"
+          }
+        ],
+        "name": "slug",
+        "type": "slug"
+      },
+      {
+        "rows": 4,
+        "description": "Product description",
+        "name": "description",
+        "type": "text"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error",
+            "message": "Price is required"
+          },
+          {
+            "rules": [
+              {
+                "flag": "min",
+                "constraint": 0
+              }
+            ],
+            "level": "error",
+            "message": "Price must be a positive number"
+          }
+        ],
+        "description": "Price in GBP (e.g., 599.99)",
+        "name": "price",
+        "type": "number"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error",
+            "message": "Category is required"
+          }
+        ],
+        "to": [
+          {
+            "type": "category"
+          }
+        ],
+        "name": "category",
+        "type": "reference"
+      },
+      {
+        "options": {
+          "list": [
+            {
+              "title": "14K",
+              "value": "14k"
+            },
+            {
+              "title": "18K",
+              "value": "18k"
+            },
+            {
+              "title": "21K",
+              "value": "21k"
+            },
+            {
+              "title": "22K",
+              "value": "22k"
+            },
+            {
+              "title": "24K",
+              "value": "24k"
+            }
+          ],
+          "layout": "radio"
+        },
+        "name": "carat",
+        "type": "string"
+      },
+      {
+        "options": {
+          "list": [
+            {
+              "title": "India",
+              "value": "india"
+            },
+            {
+              "title": "Italy",
+              "value": "italy"
+            },
+            {
+              "title": "Turkey",
+              "value": "turkey"
+            },
+            {
+              "title": "Egypt",
+              "value": "egypt"
+            },
+            {
+              "title": "Dubai",
+              "value": "dubai"
+            },
+            {
+              "title": "USA",
+              "value": "usa"
+            }
+          ],
+          "layout": "radio"
+        },
+        "name": "country",
+        "type": "string"
+      },
+      {
+        "description": "e.g., \"120cm x 80cm x 75cm\"",
+        "name": "dimensions",
+        "type": "string"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "min",
+                "constraint": 1
+              }
+            ],
+            "level": "error",
+            "message": "At least one image is required"
+          }
+        ],
+        "of": [
+          {
+            "options": {
+              "hotspot": true
+            },
+            "type": "image"
+          }
+        ],
+        "name": "images",
+        "type": "array"
+      },
+      {
+        "initialValue": 0,
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "min",
+                "constraint": 0
+              }
+            ],
+            "level": "error",
+            "message": "Stock cannot be negative"
+          }
+        ],
+        "description": "Number of items in stock",
+        "name": "stock",
+        "type": "number"
+      },
+      {
+        "initialValue": false,
+        "description": "Show on homepage and promotions",
+        "name": "featured",
+        "type": "boolean"
+      },
+      {
+        "initialValue": false,
+        "description": "Does this product require assembly?",
+        "name": "assemblyRequired",
+        "type": "boolean"
+      }
+    ],
+    "name": "product",
+    "type": "document"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error",
+            "message": "Product name is required"
+          }
+        ],
+        "name": "name",
+        "type": "string",
+        "title": "Product Name"
+      },
+      {
+        "options": {
+          "source": "name",
+          "maxLength": 96
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "custom"
+              },
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error",
+            "message": "Slug is required"
+          }
+        ],
+        "name": "slug",
+        "type": "slug"
+      },
+      {
+        "rows": 4,
+        "description": "Detailed description of the gold product",
+        "name": "description",
+        "type": "text"
+      },
+      {
+        "options": {
+          "list": [
+            {
+              "title": "Bar",
+              "value": "bar"
+            },
+            {
+              "title": "Coin",
+              "value": "coin"
+            },
+            {
+              "title": "Digital Certificate",
+              "value": "digital"
+            },
+            {
+              "title": "Jewelry",
+              "value": "jewelry"
+            }
+          ],
+          "layout": "radio"
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "valid",
+                "constraint": [
+                  "bar",
+                  "coin",
+                  "digital",
+                  "jewelry"
+                ]
+              },
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error",
+            "message": "Product form is required"
+          }
+        ],
+        "name": "productForm",
+        "type": "string"
+      },
+      {
+        "options": {
+          "list": [
+            {
+              "title": "24K (99.9% Pure)",
+              "value": "24k"
+            },
+            {
+              "title": "22K (91.6% Pure)",
+              "value": "22k"
+            },
+            {
+              "title": "18K (75% Pure)",
+              "value": "18k"
+            },
+            {
+              "title": "14K (58.3% Pure)",
+              "value": "14k"
+            }
+          ],
+          "layout": "radio"
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "valid",
+                "constraint": [
+                  "24k",
+                  "22k",
+                  "18k",
+                  "14k"
+                ]
+              },
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error",
+            "message": "Purity is required"
+          }
+        ],
+        "name": "purity",
+        "type": "string",
+        "title": "Gold Purity"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error",
+            "message": "Weight is required"
+          },
+          {
+            "rules": [
+              {
+                "flag": "min",
+                "constraint": 0
+              }
+            ],
+            "level": "error",
+            "message": "Weight must be positive"
+          }
+        ],
+        "description": "Weight of the gold product",
+        "name": "weight",
+        "type": "number"
+      },
+      {
+        "options": {
+          "list": [
+            {
+              "title": "Troy Ounce (oz)",
+              "value": "oz"
+            },
+            {
+              "title": "Gram (g)",
+              "value": "g"
+            },
+            {
+              "title": "Kilogram (kg)",
+              "value": "kg"
+            }
+          ],
+          "layout": "dropdown"
+        },
+        "initialValue": "oz",
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "valid",
+                "constraint": [
+                  "oz",
+                  "g",
+                  "kg"
+                ]
+              },
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error",
+            "message": "Weight unit is required"
+          }
+        ],
+        "name": "weightUnit",
+        "type": "string"
+      },
+      {
+        "initialValue": true,
+        "description": "Calculate price based on current market gold price + premium",
+        "name": "useLivePrice",
+        "type": "boolean",
+        "title": "Use Live Gold Price"
+      },
+      {
+        "initialValue": 3,
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "min",
+                "constraint": 0
+              },
+              {
+                "flag": "max",
+                "constraint": 100
+              }
+            ],
+            "level": "error",
+            "message": "Premium must be between 0-100%"
+          }
+        ],
+        "description": "Markup above spot price (e.g., 5 for 5%)",
+        "hidden": "conditional",
+        "name": "premiumPercentage",
+        "type": "number"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "custom"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "Fixed price when not using live pricing",
+        "hidden": "conditional",
+        "name": "fixedPrice",
+        "type": "number",
+        "title": "Fixed Price (GBP)"
+      },
+      {
+        "description": "e.g., Royal Mint, Perth Mint, PAMP Suisse",
+        "name": "manufacturer",
+        "type": "string",
+        "title": "Manufacturer/Mint"
+      },
+      {
+        "description": "Serial or certification number if applicable",
+        "name": "certificationNumber",
+        "type": "string"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              },
+              {
+                "flag": "min",
+                "constraint": 1
+              }
+            ],
+            "level": "error",
+            "message": "At least one image is required"
+          }
+        ],
+        "of": [
+          {
+            "options": {
+              "hotspot": true
+            },
+            "fields": [
+              {
+                "name": "alt",
+                "type": "string",
+                "title": "Alternative text"
+              }
+            ],
+            "type": "image"
+          }
+        ],
+        "name": "images",
+        "type": "array"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error",
+            "message": "Stock quantity is required"
+          },
+          {
+            "rules": [
+              {
+                "flag": "min",
+                "constraint": 0
+              }
+            ],
+            "level": "error",
+            "message": "Stock cannot be negative"
+          }
+        ],
+        "description": "Available quantity in stock",
+        "name": "stock",
+        "type": "number"
+      },
+      {
+        "initialValue": 5,
+        "description": "Receive alert when stock falls below this number",
+        "name": "lowStockThreshold",
+        "type": "number",
+        "title": "Low Stock Alert Threshold"
+      },
+      {
+        "initialValue": false,
+        "description": "Display in featured products section",
+        "name": "featured",
+        "type": "boolean",
+        "title": "Featured Product"
+      },
+      {
+        "initialValue": false,
+        "description": "No physical delivery - certificate/digital ownership",
+        "name": "isDigital",
+        "type": "boolean",
+        "title": "Digital Product"
+      }
+    ],
+    "name": "goldProduct",
+    "type": "document"
+  }
+]

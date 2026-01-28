@@ -8,7 +8,7 @@ import { defineQuery } from "next-sanity";
 /**
  * Add pagination to a GROQ filter query
  * Includes total count and paginated results
- * 
+ *
  * Usage:
  * const query = createPaginatedQuery(
  *   '*[_type == "product"]',
@@ -18,7 +18,7 @@ import { defineQuery } from "next-sanity";
 export function createPaginatedQuery(
   baseFilter: string,
   offset: number,
-  limit: number
+  limit: number,
 ): string {
   // Return both total count and paginated results
   return `{
@@ -36,7 +36,7 @@ export function createPaginatedProductQuery(
   sortOrder: string,
   offset: number,
   limit: number,
-  projection: string
+  projection: string,
 ): string {
   return `{
     "total": count(*[${filterConditions}]),
@@ -53,7 +53,7 @@ export function createCountedAndPaginatedQuery(
   orderBy: string,
   projection: string,
   offset: number,
-  limit: number
+  limit: number,
 ): string {
   return `{
     "total": count(*[${baseFilter}]),

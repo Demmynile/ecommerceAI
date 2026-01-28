@@ -9,8 +9,8 @@ import {
   REVENUE_BY_PERIOD_QUERY,
 } from "@/lib/sanity/queries/stats";
 
-export const dynamic = 'force-dynamic';
-export const runtime = 'nodejs';
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
 
 interface OrderItem {
   quantity: number;
@@ -127,7 +127,7 @@ export async function GET() {
       Array.from(productSalesMap.entries()).map(([id, data]) => [
         id,
         data.totalQuantity,
-      ])
+      ]),
     );
 
     const needsRestock = productsInventory
@@ -207,7 +207,7 @@ export async function GET() {
           itemCount: o.itemCount,
         })),
         urgentOrders: unfulfilledOrders.filter(
-          (o) => getDaysSinceOrder(o.createdAt) > 2
+          (o) => getDaysSinceOrder(o.createdAt) > 2,
         ).length,
       },
     };
@@ -332,7 +332,7 @@ Generate insights in the required JSON format.`,
         success: false,
         error: "Failed to generate insights",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

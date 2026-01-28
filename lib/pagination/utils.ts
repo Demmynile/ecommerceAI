@@ -10,7 +10,7 @@ import type { PaginationParams, PaginationMeta } from "./types";
  */
 export function validatePaginationParams(
   page?: string | number,
-  pageSize?: string | number
+  pageSize?: string | number,
 ): PaginationParams {
   let normalizedPage = parseInt(String(page || DEFAULT_PAGE), 10);
   let normalizedPageSize = parseInt(String(pageSize || DEFAULT_PAGE_SIZE), 10);
@@ -49,7 +49,7 @@ export function calculateOffset(page: number, pageSize: number): number {
 export function generatePaginationMeta(
   page: number,
   pageSize: number,
-  total: number
+  total: number,
 ): PaginationMeta {
   const totalPages = Math.ceil(total / pageSize);
 
@@ -69,7 +69,7 @@ export function generatePaginationMeta(
 export function buildPaginationQueryString(
   currentParams: Record<string, string | number | boolean | undefined>,
   page: number,
-  pageSize?: number
+  pageSize?: number,
 ): string {
   const params = new URLSearchParams();
 
@@ -105,7 +105,7 @@ export function generateGroqSlice(page: number, pageSize: number): string {
 export function getPageRange(
   currentPage: number,
   totalPages: number,
-  windowSize: number = 5
+  windowSize: number = 5,
 ): number[] {
   const halfWindow = Math.floor(windowSize / 2);
   let startPage = Math.max(1, currentPage - halfWindow);
@@ -116,5 +116,8 @@ export function getPageRange(
     startPage = Math.max(1, endPage - windowSize + 1);
   }
 
-  return Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
+  return Array.from(
+    { length: endPage - startPage + 1 },
+    (_, i) => startPage + i,
+  );
 }

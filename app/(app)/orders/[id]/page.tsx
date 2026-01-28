@@ -11,7 +11,7 @@ import { formatPrice, formatDate } from "@/lib/utils";
 import type { OrderDetail, OrderDetailItem } from "@/lib/sanity/types/orders";
 
 // Force dynamic rendering for authenticated content
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Order Details | Furniture Shop",

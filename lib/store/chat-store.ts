@@ -1,4 +1,3 @@
-
 import { createStore } from "zustand/vanilla";
 
 // Types

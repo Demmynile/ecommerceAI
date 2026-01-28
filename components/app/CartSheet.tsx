@@ -1,4 +1,3 @@
-
 "use client";
 
 import { AlertTriangle, Loader2, ShoppingBag } from "lucide-react";

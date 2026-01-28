@@ -13,7 +13,7 @@ export default function AdminRedirect({
 }: AdminRedirectProps) {
   const path = params.path?.join("/") || "";
   const queryString = new URLSearchParams(
-    searchParams as Record<string, string>
+    searchParams as Record<string, string>,
   ).toString();
 
   const redirectUrl = `/admin-panel${path ? `/${path}` : ""}${

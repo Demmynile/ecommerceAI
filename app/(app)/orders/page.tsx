@@ -11,7 +11,7 @@ import { StackedProductImages } from "@/components/app/StackedProductImages";
 import type { OrderListItem } from "@/lib/sanity/types/orders";
 
 // Force dynamic rendering for authenticated content
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Your Orders | Furniture Shop",

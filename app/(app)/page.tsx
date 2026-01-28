@@ -13,7 +13,11 @@ import { FeaturedCarousel } from "@/components/app/FeaturedCarousel";
 import { CategoryTiles } from "@/components/app/CategoryTiles";
 import { ProductSection } from "@/components/app/ProductSection";
 import { ProductPagination } from "@/components/app/ProductPagination";
-import { validatePaginationParams, calculateOffset, generatePaginationMeta } from "@/lib/pagination/utils";
+import {
+  validatePaginationParams,
+  calculateOffset,
+  generatePaginationMeta,
+} from "@/lib/pagination/utils";
 import { PaginationInfo } from "@/components/ui/pagination";
 
 // Revalidate every 60 seconds for fresh data
@@ -38,7 +42,10 @@ export default async function HomePage({ searchParams }: PageProps) {
   const params = await searchParams;
 
   // Pagination parameters
-  const { page, pageSize } = validatePaginationParams(params.page, params.pageSize);
+  const { page, pageSize } = validatePaginationParams(
+    params.page,
+    params.pageSize,
+  );
   const offset = calculateOffset(page, pageSize);
   const limit = offset + pageSize;
 
@@ -130,7 +137,10 @@ export default async function HomePage({ searchParams }: PageProps) {
         </div>
       </div>
 
-      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8" id="products-section">
+      <div
+        className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8"
+        id="products-section"
+      >
         <ProductSection
           categories={categories}
           products={products}
@@ -160,7 +170,8 @@ export default async function HomePage({ searchParams }: PageProps) {
         {total === 0 && (
           <div className="mt-8 text-center">
             <p className="text-zinc-600 dark:text-zinc-400">
-              No products found matching your criteria. Try adjusting your filters.
+              No products found matching your criteria. Try adjusting your
+              filters.
             </p>
           </div>
         )}

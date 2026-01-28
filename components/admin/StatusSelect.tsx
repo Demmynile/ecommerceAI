@@ -14,7 +14,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ORDER_STATUS_CONFIG, getOrderStatus, type OrderStatusValue } from "@/lib/constants/orderStatus";
+import {
+  ORDER_STATUS_CONFIG,
+  getOrderStatus,
+  type OrderStatusValue,
+} from "@/lib/constants/orderStatus";
 import { updateOrderStatusAction } from "@/lib/actions/admin-actions";
 import { toast } from "sonner";
 

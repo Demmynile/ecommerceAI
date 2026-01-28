@@ -69,7 +69,7 @@ export function createGetMyOrdersTool(userId: string | null) {
         let filteredOrders = orders as OrderListItem[];
         if (status) {
           filteredOrders = filteredOrders.filter(
-            (order) => order.status === status
+            (order) => order.status === status,
           );
         }
 
@@ -94,10 +94,10 @@ export function createGetMyOrdersTool(userId: string | null) {
           statusDisplay: getOrderStatusEmoji(order.status),
           itemCount: order.itemCount ?? 0,
           itemNames: (order.itemNames ?? []).filter(
-            (name): name is string => name !== null
+            (name): name is string => name !== null,
           ),
           itemImages: (order.itemImages ?? []).filter(
-            (url): url is string => url !== null
+            (url): url is string => url !== null,
           ),
           createdAt: order.createdAt,
           orderUrl: `/orders/${order._id}`,

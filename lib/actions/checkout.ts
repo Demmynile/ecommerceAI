@@ -1,4 +1,3 @@
-
 "use server";
 
 import { auth, currentUser } from "@clerk/nextjs/server";
@@ -34,7 +33,7 @@ interface CheckoutResult {
  * Validates stock and prices against Sanity before creating session
  */
 export async function createCheckoutSession(
-  items: CartItem[]
+  items: CartItem[],
 ): Promise<CheckoutResult> {
   try {
     // 1. Verify user is authenticated
@@ -65,7 +64,7 @@ export async function createCheckoutSession(
 
     for (const item of items) {
       const product = products.find(
-        (p: { _id: string }) => p._id === item.productId
+        (p: { _id: string }) => p._id === item.productId,
       );
 
       if (!product) {
@@ -80,7 +79,7 @@ export async function createCheckoutSession(
 
       if (item.quantity > (product.stock ?? 0)) {
         validationErrors.push(
-          `Only ${product.stock} of "${product.name}" available`
+          `Only ${product.stock} of "${product.name}" available`,
         );
         continue;
       }

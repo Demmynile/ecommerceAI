@@ -16,7 +16,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn, formatPrice } from "@/lib/utils";
-import type { FeaturedProduct, FeaturedProductList } from "@/lib/sanity/types/products";
+import type {
+  FeaturedProduct,
+  FeaturedProductList,
+} from "@/lib/sanity/types/products";
 
 interface FeaturedCarouselProps {
   products: FeaturedProductList;

@@ -33,7 +33,7 @@ export function useCartStock(items: CartItem[]): UseCartStockReturn {
   // Memoize product IDs to use as stable dependency
   const productIds = useMemo(
     () => items.map((item) => item.productId),
-    [items]
+    [items],
   );
 
   const fetchStock = useCallback(async () => {
@@ -53,7 +53,7 @@ export function useCartStock(items: CartItem[]): UseCartStockReturn {
 
       for (const item of items) {
         const product = products.find(
-          (p: { _id: string }) => p._id === item.productId
+          (p: { _id: string }) => p._id === item.productId,
         );
         const currentStock = product?.stock ?? 0;
 
@@ -79,7 +79,7 @@ export function useCartStock(items: CartItem[]): UseCartStockReturn {
   }, [fetchStock]);
 
   const hasStockIssues = Array.from(stockMap.values()).some(
-    (info) => info.isOutOfStock || info.exceedsStock
+    (info) => info.isOutOfStock || info.exceedsStock,
   );
 
   return {

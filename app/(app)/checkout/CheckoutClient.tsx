@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, ShoppingBag, AlertTriangle, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { CheckoutButton } from "@/components/app/CheckoutButton";
+import { PaymentSelector } from "@/components/app/PaymentSelector";
 import { formatPrice } from "@/lib/utils";
 import {
   useCartItems,
@@ -18,6 +18,9 @@ export function CheckoutClient() {
   const totalPrice = useTotalPrice();
   const totalItems = useTotalItems();
   const { stockMap, isLoading, hasStockIssues } = useCartStock(items);
+
+  // Check if cart contains any gold products
+  const hasGoldProducts = items.some((item) => item.isGoldProduct);
 
   if (items.length === 0) {
     return (
@@ -158,47 +161,111 @@ export function CheckoutClient() {
 
         {/* Order Total & Checkout */}
         <div className="lg:col-span-2">
-          <div className="sticky top-24 rounded-lg border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-950">
-            <h2 className="font-semibold text-zinc-900 dark:text-zinc-100">
-              Payment Summary
-            </h2>
+          <div className="sticky top-24 space-y-4">
+            {/* Gold Trading Badge */}
+            {hasGoldProducts && (
+              <div className="rounded-xl border border-amber-200 bg-linear-to-br from-amber-50 to-yellow-50/50 p-4 dark:border-amber-800/50 dark:from-amber-950/30 dark:to-yellow-950/20">
+                <div className="flex items-center gap-2">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-amber-500 text-white">
+                    <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-amber-900 dark:text-amber-200">
+                      Gold Trading Transaction
+                    </p>
+                    <p className="text-xs text-amber-700 dark:text-amber-400">
+                      Multiple payment options available
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
 
-            <div className="mt-6 space-y-4">
-              <div className="flex justify-between text-sm">
-                <span className="text-zinc-500 dark:text-zinc-400">
-                  Subtotal
-                </span>
-                <span className="text-zinc-900 dark:text-zinc-100">
-                  {formatPrice(totalPrice)}
-                </span>
+            {/* Payment Summary Card */}
+            <div className="overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-950">
+              <div className="border-b border-zinc-200 bg-linear-to-r from-zinc-50 to-zinc-100/50 px-6 py-4 dark:border-zinc-800 dark:from-zinc-900 dark:to-zinc-800/50">
+                <h2 className="flex items-center gap-2 text-lg font-bold text-zinc-900 dark:text-zinc-100">
+                  <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                  Payment Summary
+                </h2>
               </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-zinc-500 dark:text-zinc-400">
-                  Shipping
-                </span>
-                <span className="text-zinc-900 dark:text-zinc-100">
-                  Calculated at checkout
-                </span>
-              </div>
-              <div className="border-t border-zinc-200 pt-4 dark:border-zinc-800">
-                <div className="flex justify-between text-base font-semibold">
-                  <span className="text-zinc-900 dark:text-zinc-100">
-                    Total
+
+              <div className="space-y-4 p-6">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-zinc-600 dark:text-zinc-400">
+                    Subtotal ({totalItems} {totalItems === 1 ? "item" : "items"})
                   </span>
-                  <span className="text-zinc-900 dark:text-zinc-100">
+                  <span className="font-semibold text-zinc-900 dark:text-zinc-100">
                     {formatPrice(totalPrice)}
                   </span>
                 </div>
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-zinc-600 dark:text-zinc-400">
+                    Shipping & Handling
+                  </span>
+                  <span className="text-xs text-zinc-500 dark:text-zinc-500">
+                    At checkout
+                  </span>
+                </div>
+                <div className="border-t border-zinc-200 pt-4 dark:border-zinc-800">
+                  <div className="flex items-center justify-between">
+                    <span className="text-lg font-bold text-zinc-900 dark:text-zinc-100">
+                      Total
+                    </span>
+                    <span className="text-2xl font-bold text-amber-600 dark:text-amber-400">
+                      {formatPrice(totalPrice)}
+                    </span>
+                  </div>
+                  <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-500">
+                    Tax included where applicable
+                  </p>
+                </div>
+              </div>
+
+              <div className="border-t border-zinc-200 px-6 pb-6 pt-4 dark:border-zinc-800">
+                {hasGoldProducts ? (
+                  <PaymentSelector disabled={hasStockIssues || isLoading} />
+                ) : (
+                  <Button
+                    size="lg"
+                    className="h-12 w-full font-semibold shadow-lg"
+                    disabled={hasStockIssues || isLoading}
+                    onClick={async () => {
+                      try {
+                        const response = await fetch(
+                          "/api/payment/stripe/checkout",
+                          {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                              items: items.map((item) => ({
+                                productId: item.productId,
+                                quantity: item.quantity,
+                                price: item.price,
+                              })),
+                            }),
+                          },
+                        );
+
+                        const data = await response.json();
+
+                        if (data.url) {
+                          window.location.href = data.url;
+                        }
+                      } catch (error) {
+                        console.error("Checkout error:", error);
+                      }
+                    }}
+                  >
+                    Proceed to Checkout
+                  </Button>
+                )}
               </div>
             </div>
-
-            <div className="mt-6">
-              <CheckoutButton disabled={hasStockIssues || isLoading} />
-            </div>
-
-            <p className="mt-4 text-center text-xs text-zinc-500 dark:text-zinc-400">
-              You&apos;ll be redirected to Stripe&apos;s secure checkout
-            </p>
           </div>
         </div>
       </div>

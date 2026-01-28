@@ -9,7 +9,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { DEFAULT_PAGE_SIZE, PAGE_SIZE_OPTIONS } from "@/lib/pagination/constants";
+import {
+  DEFAULT_PAGE_SIZE,
+  PAGE_SIZE_OPTIONS,
+} from "@/lib/pagination/constants";
 import { cn } from "@/lib/utils";
 
 export interface AdvancedPaginationProps {
@@ -130,7 +133,7 @@ export function AdvancedPagination({
               disabled={isLoading}
               className={cn(
                 currentPage === page &&
-                  "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900"
+                  "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900",
               )}
             >
               {page}
