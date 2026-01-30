@@ -97,6 +97,14 @@ export default function GoldPage() {
             <div className="mb-12">
               {loading ? (
                 <ProductGridSkeleton />
+              ) : filtered.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-16 text-yellow-700">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mb-4 text-yellow-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4m0 4h.01M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z" />
+                  </svg>
+                  <h3 className="text-lg font-semibold mb-2">No products found</h3>
+                  <p className="text-sm text-yellow-500">Try adjusting your search or filters to find what you're looking for.</p>
+                </div>
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-8">
                   {paginated.map((product) => (
