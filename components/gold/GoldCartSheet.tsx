@@ -75,7 +75,7 @@ export function GoldCartSheet({ open, onOpenChange }: { open: boolean; onOpenCha
                           </Button>
                         </div>
                       </div>
-                      <div className="text-sm text-yellow-700 mt-1">${item.price.toFixed(2)}</div>
+                      <div className="text-sm text-yellow-700 mt-1">£{item.price.toFixed(2)}</div>
                     </div>
                   </div>
                 ))}
@@ -84,7 +84,7 @@ export function GoldCartSheet({ open, onOpenChange }: { open: boolean; onOpenCha
             <div className="border-t border-yellow-100 p-4">
               <div className="flex justify-between text-base font-medium text-yellow-900">
                 <span>Subtotal</span>
-                <span>${totalPrice.toFixed(2)}</span>
+                <span>£{totalPrice.toFixed(2)}</span>
               </div>
               <p className="mt-1 text-sm text-yellow-500">Shipping calculated at checkout</p>
               <div className="mt-4">
