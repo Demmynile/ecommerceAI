@@ -46,7 +46,7 @@ export default function GoldCheckoutPage() {
                       <div className="font-bold text-yellow-900 truncate text-lg">{item.name}</div>
                       <div className="text-sm text-yellow-700 font-semibold">Qty: {item.quantity}</div>
                     </div>
-                    <div className="font-extrabold text-yellow-700 text-lg">${(item.price * item.quantity).toFixed(2)}</div>
+                    <div className="font-extrabold text-yellow-700 text-lg">£{(item.price * item.quantity).toFixed(2)}</div>
                   </li>
                 ))}
               </ul>
@@ -59,7 +59,7 @@ export default function GoldCheckoutPage() {
           <div className="flex flex-col gap-2 text-base">
             <div className="flex justify-between">
               <span className="text-zinc-700 font-medium">Subtotal</span>
-              <span className="font-bold text-yellow-900 text-lg">${subtotal.toFixed(2)}</span>
+              <span className="font-bold text-yellow-900 text-lg">£{subtotal.toFixed(2)}</span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-zinc-500">Shipping</span>
