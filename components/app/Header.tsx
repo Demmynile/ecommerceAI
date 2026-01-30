@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Package, ShoppingBag, Sparkles, User, Menu, X } from "lucide-react";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
@@ -21,10 +22,15 @@ export function Header() {
     <header className="sticky top-0 z-50 border-b border-zinc-200 bg-white/80 backdrop-blur-md dark:border-zinc-800 dark:bg-zinc-950/80">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2">
-          <span className="text-xl font-bold text-zinc-900 dark:text-zinc-100">
-            The Furniture Store
-          </span>
+        <Link href="/" className="flex items-center gap-2 py-2">
+          <Image
+            src="/mola.png"
+            alt="Mola"
+            width={320}
+            height={120}
+            className="h-24 md:h-28 lg:h-24 w-auto px-4 md:px-6 py-2"
+            priority
+          />
         </Link>
 
         {/* Hamburger for mobile */}
