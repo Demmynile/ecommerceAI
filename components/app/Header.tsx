@@ -7,16 +7,20 @@ import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import { useCartActions, useTotalItems } from "@/lib/store/cart-store-provider";
 import { useChatActions, useIsChatOpen } from "@/lib/store/chat-store-provider";
+import { GoldCartButton } from "@/components/gold/GoldCartButton";
+import { GoldCartSheet } from "@/components/gold/GoldCartSheet";
 import React from "react";
+import { useIsGoldPage } from "@/components/app/useIsGoldPage";
 
 
 export function Header() {
-  
   const { openCart } = useCartActions();
   const { openChat } = useChatActions();
   const isChatOpen = useIsChatOpen();
   const totalItems = useTotalItems();
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
+  const isGoldPage = useIsGoldPage();
+  const [goldCartOpen, setGoldCartOpen] = React.useState(false);
 
   return (
     <header className="sticky top-0 z-50 border-b border-zinc-200 bg-white/80 backdrop-blur-md dark:border-zinc-800 dark:bg-zinc-950/80">
@@ -58,8 +62,18 @@ export function Header() {
             </Button>
           </SignedIn>
 
+
+          {/* Digital Gold Button */}
+          {!isGoldPage && (
+            <Button asChild className="gap-2 bg-yellow-400 hover:bg-yellow-500 text-zinc-900 font-semibold shadow-md transition-all">
+              <Link href="/gold" className="flex items-center gap-2">
+                <span className="text-sm font-medium">Digital Gold</span>
+              </Link>
+            </Button>
+          )}
+
           {/* AI Shopping Assistant */}
-          {!isChatOpen && (
+          {!isGoldPage && !isChatOpen && (
             <Button
               onClick={openChat}
               className="gap-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-md shadow-amber-200/50 transition-all hover:from-amber-600 hover:to-orange-600 hover:shadow-lg hover:shadow-amber-300/50 dark:shadow-amber-900/30 dark:hover:shadow-amber-800/40"
@@ -69,21 +83,28 @@ export function Header() {
             </Button>
           )}
 
-          {/* Cart Button */}
-          <Button
-            variant="ghost"
-            size="icon"
-            className="relative"
-            onClick={openCart}
-          >
-            <ShoppingBag className="h-5 w-5" />
-            {totalItems > 0 && (
-              <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-zinc-900 text-xs font-medium text-white dark:bg-zinc-100 dark:text-zinc-900">
-                {totalItems > 99 ? "99+" : totalItems}
-              </span>
-            )}
-            <span className="sr-only">Open cart ({totalItems} items)</span>
-          </Button>
+          {/* Cart Button (main) or Gold Cart Button (gold page) */}
+          {isGoldPage ? (
+            <>
+              <GoldCartButton onClick={() => setGoldCartOpen(true)} />
+              <GoldCartSheet open={goldCartOpen} onOpenChange={setGoldCartOpen} />
+            </>
+          ) : (
+            <Button
+              variant="ghost"
+              size="icon"
+              className="relative"
+              onClick={openCart}
+            >
+              <ShoppingBag className="h-5 w-5" />
+              {totalItems > 0 && (
+                <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-zinc-900 text-xs font-medium text-white dark:bg-zinc-100 dark:text-zinc-900">
+                  {totalItems > 99 ? "99+" : totalItems}
+                </span>
+              )}
+              <span className="sr-only">Open cart ({totalItems} items)</span>
+            </Button>
+          )}
 
           {/* User */}
           <SignedIn>
@@ -126,8 +147,16 @@ export function Header() {
                 </Link>
               </Button>
             </SignedIn>
+            {/* Buy Gold Button (mobile) */}
+            {!isGoldPage && (
+              <Button asChild className="w-full justify-start gap-2 bg-yellow-400 hover:bg-yellow-500 text-zinc-900 font-semibold shadow-md transition-all">
+                <Link href="/gold" className="flex items-center gap-2">
+                  <span className="text-sm font-medium">Buy Gold</span>
+                </Link>
+              </Button>
+            )}
             {/* AI Shopping Assistant */}
-            {!isChatOpen && (
+            {!isGoldPage && !isChatOpen && (
               <Button
                 onClick={() => {
                   openChat();
@@ -139,24 +168,34 @@ export function Header() {
                 <span className="text-sm font-medium">Ask AI</span>
               </Button>
             )}
-            {/* Cart Button */}
-            <Button
-              variant="ghost"
-              size="icon"
-              className="relative w-full justify-start"
-              onClick={() => {
-                openCart();
-                setMobileMenuOpen(false);
-              }}
-            >
-              <ShoppingBag className="h-5 w-5" />
-              {totalItems > 0 && (
-                <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-zinc-900 text-xs font-medium text-white dark:bg-zinc-100 dark:text-zinc-900">
-                  {totalItems > 99 ? "99+" : totalItems}
-                </span>
-              )}
-              <span className="sr-only">Open cart ({totalItems} items)</span>
-            </Button>
+            {/* Cart Button (main) or Gold Cart Button (gold page) - mobile */}
+            {isGoldPage ? (
+              <>
+                <GoldCartButton onClick={() => {
+                  setGoldCartOpen(true);
+                  setMobileMenuOpen(false);
+                }} />
+                <GoldCartSheet open={goldCartOpen} onOpenChange={setGoldCartOpen} />
+              </>
+            ) : (
+              <Button
+                variant="ghost"
+                size="icon"
+                className="relative w-full justify-start"
+                onClick={() => {
+                  openCart();
+                  setMobileMenuOpen(false);
+                }}
+              >
+                <ShoppingBag className="h-5 w-5" />
+                {totalItems > 0 && (
+                  <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-zinc-900 text-xs font-medium text-white dark:bg-zinc-100 dark:text-zinc-900">
+                    {totalItems > 99 ? "99+" : totalItems}
+                  </span>
+                )}
+                <span className="sr-only">Open cart ({totalItems} items)</span>
+              </Button>
+            )}
             {/* User */}
             <SignedIn>
               <UserButton
