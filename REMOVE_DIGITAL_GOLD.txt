@@ -1,0 +1,14 @@
+The following files and features related to digital gold should be deleted from the project:
+
+- sanity/schemaTypes/digitalGoldProductType.ts
+- sanity/schemaTypes/digitalGoldOrderType.ts
+- components/gold/GoldProductsClient.tsx
+- components/gold/GoldProductsWithCartProvider.tsx
+- update-digital-gold-products.js
+- All digital gold-related pages in app/gold and app/gold/orders
+
+Also remove their imports and references from:
+- sanity/schemaTypes/index.ts
+- Any other files referencing digital gold product/order types or components
+
+This will fully remove the digital gold feature from the codebase.

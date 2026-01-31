@@ -3,6 +3,7 @@
 "use client";
 import { useGoldCart } from "@/lib/store/gold-cart-store-provider";
 import { GoldPaymentOptions } from "@/components/gold/GoldPaymentOptions";
+import { GoldStripeCheckoutButton } from "@/components/gold/GoldStripeCheckoutButton";
 import Image from "next/image";
 
 
@@ -19,7 +20,7 @@ export default function GoldCheckoutPage() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-yellow-50 to-zinc-50 py-10 px-2 md:px-0">
+    <main className="min-h-screen bg-linear-to-br from-yellow-50 to-zinc-50 py-10 px-2 md:px-0">
       <div className="max-w-4xl mx-auto mb-6">
         <Link href="/gold" className="inline-block text-yellow-700 hover:text-yellow-900 font-semibold text-sm px-3 py-2 rounded transition-colors bg-yellow-100 hover:bg-yellow-200">
           ← Return to Digital Gold
@@ -54,7 +55,7 @@ export default function GoldCheckoutPage() {
           )}
         </section>
         {/* Order Summary Sticky Card */}
-        <aside className="md:col-span-1 sticky top-10 self-start bg-yellow-50/80 rounded-3xl shadow-xl border border-yellow-200 p-8 flex flex-col gap-6 min-w-[260px] max-w-sm mx-auto">
+        <aside className="md:col-span-1 sticky top-10 self-start bg-yellow-50/80 rounded-3xl shadow-xl border border-yellow-200 p-8 flex flex-col gap-6 min-w-65 max-w-sm mx-auto">
           <h2 className="text-xl font-bold text-yellow-800 mb-2 tracking-tight">Order Summary</h2>
           <div className="flex flex-col gap-2 text-base">
             <div className="flex justify-between">
@@ -66,7 +67,7 @@ export default function GoldCheckoutPage() {
               <span className="text-zinc-400">Calculated at payment</span>
             </div>
           </div>
-          <div className="mt-4">
+          <div className="mt-4 flex flex-col gap-2">
             <GoldPaymentOptions onSelect={handleSelect} />
           </div>
           <div className="text-center mt-2 text-xs text-zinc-400">Secured checkout. Powered by Stripe & Coinbase.</div>
