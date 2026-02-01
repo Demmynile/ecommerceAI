@@ -40,8 +40,7 @@ const ORDERS_PAGINATED_QUERY = `{
 
 export default async function OrdersPage({ searchParams }: OrdersPageProps) {
   const { userId } = await auth();
-  const resolvedSearchParams = typeof searchParams?.then === "function" ? await searchParams : searchParams;
-  const { page, pageSize } = validatePaginationParams(resolvedSearchParams.page, resolvedSearchParams.pageSize);
+  const { page, pageSize } = validatePaginationParams(searchParams.page, searchParams.pageSize);
   const offset = calculateOffset(page, pageSize);
   const limit = offset + pageSize;
   const { data } = await sanityFetch({
@@ -73,7 +72,7 @@ export default async function OrdersPage({ searchParams }: OrdersPageProps) {
           Your Orders
         </h1>
         <p className="mt-2 text-zinc-500 dark:text-zinc-400">
-          Track and manage your orders
+          Track and manage all orders.
         </p>
       </div>
 
