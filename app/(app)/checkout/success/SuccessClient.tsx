@@ -40,6 +40,9 @@ export function SuccessClient({ session }: SuccessClientProps) {
 
   const address = session.shippingAddress;
 
+  // If no session details (like for gold), show a generic confirmation
+  const isGeneric = !session.customerEmail && !session.lineItems && !session.amountTotal;
+
   return (
     <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:px-8">
       <div className="text-center">
@@ -47,84 +50,91 @@ export function SuccessClient({ session }: SuccessClientProps) {
         <h1 className="mt-4 text-3xl font-bold text-zinc-900 dark:text-zinc-100">
           Order Confirmed!
         </h1>
-        <p className="mt-2 text-zinc-600 dark:text-zinc-400">
-          Thank you for your purchase. We&apos;ve sent a confirmation to{" "}
-          <span className="font-medium">{session.customerEmail}</span>
-        </p>
+        {isGeneric ? (
+          <p className="mt-2 text-zinc-600 dark:text-zinc-400">
+            Thank you for your digital gold purchase. Your order has been received and is being processed.
+          </p>
+        ) : (
+          <p className="mt-2 text-zinc-600 dark:text-zinc-400">
+            Thank you for your purchase. We&apos;ve sent a confirmation to{" "}
+            <span className="font-medium">{session.customerEmail}</span>
+          </p>
+        )}
       </div>
 
-      {/* Order Details */}
-      <div className="mt-10 rounded-lg border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950">
-        <div className="border-b border-zinc-200 px-6 py-4 dark:border-zinc-800">
-          <h2 className="font-semibold text-zinc-900 dark:text-zinc-100">
-            Order Details
-          </h2>
-        </div>
+      {!isGeneric && (
+        <div className="mt-10 rounded-lg border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950">
+          <div className="border-b border-zinc-200 px-6 py-4 dark:border-zinc-800">
+            <h2 className="font-semibold text-zinc-900 dark:text-zinc-100">
+              Order Details
+            </h2>
+          </div>
 
-        <div className="px-6 py-4">
-          {/* Items */}
-          {session.lineItems && session.lineItems.length > 0 && (
-            <div className="space-y-3">
-              {session.lineItems.map((item) => (
-                <div
-                  key={`${item.name}-${item.quantity}-${item.amount}`}
-                  className="flex justify-between text-sm"
-                >
-                  <span className="text-zinc-600 dark:text-zinc-400">
-                    {item.name} × {item.quantity}
-                  </span>
-                  <span className="font-medium text-zinc-900 dark:text-zinc-100">
-                    {formatPrice(item.amount / 100)}
-                  </span>
-                </div>
-              ))}
+          <div className="px-6 py-4">
+            {/* Items */}
+            {session.lineItems && session.lineItems.length > 0 && (
+              <div className="space-y-3">
+                {session.lineItems.map((item) => (
+                  <div
+                    key={`${item.name}-${item.quantity}-${item.amount}`}
+                    className="flex justify-between text-sm"
+                  >
+                    <span className="text-zinc-600 dark:text-zinc-400">
+                      {item.name} × {item.quantity}
+                    </span>
+                    <span className="font-medium text-zinc-900 dark:text-zinc-100">
+                      {formatPrice(item.amount / 100)}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Total */}
+            <div className="mt-4 border-t border-zinc-200 pt-4 dark:border-zinc-800">
+              <div className="flex justify-between text-base font-semibold">
+                <span className="text-zinc-900 dark:text-zinc-100">Total</span>
+                <span className="text-zinc-900 dark:text-zinc-100">
+                  {formatPrice((session.amountTotal ?? 0) / 100)}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Shipping Address */}
+          {address && (
+            <div className="border-t border-zinc-200 px-6 py-4 dark:border-zinc-800">
+              <h3 className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                Shipping to
+              </h3>
+              <div className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+                {session.customerName && <p>{session.customerName}</p>}
+                {address.line1 && <p>{address.line1}</p>}
+                {address.line2 && <p>{address.line2}</p>}
+                <p>
+                  {[address.city, address.state, address.postal_code]
+                    .filter(Boolean)
+                    .join(", ")}
+                </p>
+                {address.country && <p>{address.country}</p>}
+              </div>
             </div>
           )}
 
-          {/* Total */}
-          <div className="mt-4 border-t border-zinc-200 pt-4 dark:border-zinc-800">
-            <div className="flex justify-between text-base font-semibold">
-              <span className="text-zinc-900 dark:text-zinc-100">Total</span>
-              <span className="text-zinc-900 dark:text-zinc-100">
-                {formatPrice((session.amountTotal ?? 0) / 100)}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* Shipping Address */}
-        {address && (
+          {/* Payment Status */}
           <div className="border-t border-zinc-200 px-6 py-4 dark:border-zinc-800">
-            <h3 className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
-              Shipping to
-            </h3>
-            <div className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-              {session.customerName && <p>{session.customerName}</p>}
-              {address.line1 && <p>{address.line1}</p>}
-              {address.line2 && <p>{address.line2}</p>}
-              <p>
-                {[address.city, address.state, address.postal_code]
-                  .filter(Boolean)
-                  .join(", ")}
-              </p>
-              {address.country && <p>{address.country}</p>}
+            <div className="flex items-center gap-2">
+              <Package className="h-5 w-5 text-zinc-400" />
+              <span className="text-sm text-zinc-600 dark:text-zinc-400">
+                Payment status: {" "}
+                <span className="font-medium capitalize text-green-600">
+                  {session.paymentStatus}
+                </span>
+              </span>
             </div>
           </div>
-        )}
-
-        {/* Payment Status */}
-        <div className="border-t border-zinc-200 px-6 py-4 dark:border-zinc-800">
-          <div className="flex items-center gap-2">
-            <Package className="h-5 w-5 text-zinc-400" />
-            <span className="text-sm text-zinc-600 dark:text-zinc-400">
-              Payment status:{" "}
-              <span className="font-medium capitalize text-green-600">
-                {session.paymentStatus}
-              </span>
-            </span>
-          </div>
         </div>
-      </div>
+      )}
 
       {/* Actions */}
       <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">

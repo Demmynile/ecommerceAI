@@ -4,6 +4,8 @@ import { Package, ArrowRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { EmptyState } from "@/components/ui/empty-state";
 import { sanityFetch } from "@/sanity/lib/live";
+import { validatePaginationParams, calculateOffset, generatePaginationMeta } from "@/lib/pagination";
+import { PaginationClient } from "@/components/ui/PaginationClient";
 import { ORDERS_BY_USER_QUERY } from "@/lib/sanity/queries/orders";
 import { getOrderStatus } from "@/lib/constants/orderStatus";
 import { formatPrice, formatDate, formatOrderNumber } from "@/lib/utils";
@@ -18,13 +20,37 @@ export const metadata = {
   description: "View your order history",
 };
 
-export default async function OrdersPage() {
-  const { userId } = await auth();
+interface OrdersPageProps {
+  searchParams: { page?: string; pageSize?: string };
+}
 
-  const { data: orders } = await sanityFetch({
-    query: ORDERS_BY_USER_QUERY,
-    params: { clerkUserId: userId ?? "" },
+const ORDERS_PAGINATED_QUERY = `{
+  "total": count(*[_type == 'order' && clerkUserId == $clerkUserId]),
+  "results": *[_type == 'order' && clerkUserId == $clerkUserId] | order(createdAt desc)[$offset...$limit] {
+    _id,
+    orderNumber,
+    total,
+    status,
+    createdAt,
+    "itemCount": count(items),
+    "itemNames": items[].product->name,
+    "itemImages": items[].product->images[0].asset->url
+  }
+}`;
+
+export default async function OrdersPage({ searchParams }: OrdersPageProps) {
+  const { userId } = await auth();
+  const resolvedSearchParams = typeof searchParams?.then === "function" ? await searchParams : searchParams;
+  const { page, pageSize } = validatePaginationParams(resolvedSearchParams.page, resolvedSearchParams.pageSize);
+  const offset = calculateOffset(page, pageSize);
+  const limit = offset + pageSize;
+  const { data } = await sanityFetch({
+    query: ORDERS_PAGINATED_QUERY,
+    params: { clerkUserId: userId ?? "", offset, limit },
   });
+  const orders = data?.results || [];
+  const total = data?.total || 0;
+  const paginationMeta = generatePaginationMeta(page, pageSize, total);
 
   if (orders.length === 0) {
     return (
@@ -121,6 +147,11 @@ export default async function OrdersPage() {
           );
         })}
       </div>
+      <PaginationClient
+        currentPage={paginationMeta.page}
+        totalPages={paginationMeta.totalPages}
+        pageSize={paginationMeta.pageSize}
+      />
     </div>
   );
 }
