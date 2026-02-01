@@ -73,7 +73,7 @@ export default async function OrdersPage({ searchParams }: OrdersPageProps) {
           Your Orders
         </h1>
         <p className="mt-2 text-zinc-500 dark:text-zinc-400">
-          Track and manage your orders
+          Track and manage all orders.
         </p>
       </div>
 
