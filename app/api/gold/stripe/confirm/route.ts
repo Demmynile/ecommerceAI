@@ -3,7 +3,7 @@ import Stripe from "stripe";
 import { writeClient } from "@/sanity/lib/client";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2023-10-16",
+  apiVersion: "2025-12-15.clover",
 });
 
 export async function POST(req: NextRequest) {
@@ -21,14 +21,18 @@ export async function POST(req: NextRequest) {
     const order = {
       _type: "digitalGoldOrder",
       orderNumber: session.id,
-      items: lineItems.data.map((item) => ({
-        // Try to resolve product reference by SKU if available
-        product: item.price?.product?.metadata?.sku
-          ? { _type: "reference", _ref: item.price.product.metadata.sku }
-          : undefined,
-        quantity: item.quantity,
-        priceAtPurchase: item.amount_total / 100,
-      })),
+      items: lineItems.data.map((item) => {
+        const product = item.price?.product;
+        let productRef = undefined;
+        if (product && typeof product === "object" && "metadata" in product && product.metadata?.sku) {
+          productRef = { _type: "reference", _ref: product.metadata.sku };
+        }
+        return {
+          product: productRef,
+          quantity: item.quantity,
+          priceAtPurchase: item.amount_total / 100,
+        };
+      }),
       total: session.amount_total ? session.amount_total / 100 : 0,
       status: session.payment_status,
       email: session.customer_details?.email || "",

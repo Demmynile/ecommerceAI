@@ -40,8 +40,7 @@ const ORDERS_PAGINATED_QUERY = `{
 
 export default async function OrdersPage({ searchParams }: OrdersPageProps) {
   const { userId } = await auth();
-  const resolvedSearchParams = typeof searchParams?.then === "function" ? await searchParams : searchParams;
-  const { page, pageSize } = validatePaginationParams(resolvedSearchParams.page, resolvedSearchParams.pageSize);
+  const { page, pageSize } = validatePaginationParams(searchParams.page, searchParams.pageSize);
   const offset = calculateOffset(page, pageSize);
   const limit = offset + pageSize;
   const { data } = await sanityFetch({
